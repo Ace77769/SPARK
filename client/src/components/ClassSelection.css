@@ -1,0 +1,105 @@
+.class-selection-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 1rem;
+  box-sizing: border-box;
+}
+
+.class-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.class-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.15), transparent 70%);
+  transform: scale(0);
+  transition: transform 0.5s ease;
+}
+
+.class-card:hover::before {
+  transform: scale(1);
+}
+
+.class-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.class-card.selected {
+  background: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.3);
+}
+
+.class-card .class-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.class-card .class-description {
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 900px) {
+  .class-selection-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    padding: 1.5rem;
+  }
+
+  .class-card {
+    padding: 1.25rem;
+  }
+
+  .class-card .class-title {
+    font-size: 1.35rem;
+  }
+
+  .class-card .class-description {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .class-selection-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .class-card {
+    padding: 1rem;
+  }
+
+  .class-card .class-title {
+    font-size: 1.25rem;
+  }
+
+  .class-card .class-description {
+    font-size: 0.9rem;
+  }
+}
