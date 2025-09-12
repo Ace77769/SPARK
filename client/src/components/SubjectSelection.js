@@ -15,30 +15,41 @@ export default function SubjectSelection() {
   };
 
   return (
-    <div className="subject-selection-container">
-      <h2 className="heading">
-        Select Subject for {selectedClass || 'Class'}
-      </h2>
+    <div className="subject-page-root">
+      {/* Floating animated bubbles (background) */}
+      <div className="bubbles" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-      <div className="subjects-grid">
-        {subjects.map((subject, index) => (
-          <div key={index} className="subject-card">
-            <h3 className="subject-title">{subject}</h3>
-            <p className="subject-description">Explore {subject}</p>
+      <div className="subject-selection-container">
+        <h2 className="heading">
+          📚 Learning Hub — {selectedClass ? `${selectedClass}` : 'Select Class'}
+        </h2>
 
-            <div className="subparts-grid">
-              {subParts.map((part, i) => (
-                <button
-                  key={i}
-                  className="subpart-button"
-                  onClick={() => handleSubpartClick(subject, part)}
-                >
-                  {part}
-                </button>
-              ))}
+        <div className="subjects-grid">
+          {subjects.map((subject, index) => (
+            <div key={index} className="subject-card">
+              <h3 className="subject-title">{subject}</h3>
+              <p className="subject-description">Explore {subject}</p>
+
+              <div className="subparts-grid">
+                {subParts.map((part, i) => (
+                  <button
+                    key={i}
+                    className="subpart-button"
+                    onClick={() => handleSubpartClick(subject, part)}
+                  >
+                    {part}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,76 @@
+.teacher-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+.teacher-nav .brand {
+  font-weight: bold;
+}
+
+.teacher-nav .links a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.teacher-dashboard {
+  padding: 20px;
+  text-align: center;
+}
+
+.teacher-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+  width: 220px;
+}
+
+.card:hover {
+  background: #f0f8ff;
+}
+
+.teacher-form {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.teacher-form input,
+.teacher-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.primary {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary:hover {
+  background: #0056b3;
+}

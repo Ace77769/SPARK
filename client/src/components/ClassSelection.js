@@ -10,20 +10,26 @@ export default function ClassSelection() {
     navigate('/subject', { state: { selectedClass: selected } });
   };
 
+  const classColors = [
+    "gradient-1", "gradient-2", "gradient-3", "gradient-4",
+    "gradient-5", "gradient-6", "gradient-7", "gradient-8"
+  ];
+
+  const classIcons = ["🎓","📘","✏️","📚","🧮","🧪","🌍","💡"];
+
   return (
     <div className="class-selection-container">
-      {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => {
+      {[1, 2, 3, 4, 5, 6, 7, 8].map((num, index) => {
         const title = `Class ${num}`;
         return (
           <div
             key={num}
-            className="class-card"
+            className={`class-card ${classColors[index]}`}
             onClick={() => handleClick(num)}
           >
+            <div className="icon">{classIcons[index]}</div>
             <h3 className="class-title">{title}</h3>
-            <p className="class-description">
-              Click to select this class
-            </p>
+            <p className="class-description">Click to explore subjects</p>
           </div>
         );
       })}
