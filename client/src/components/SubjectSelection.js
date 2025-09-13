@@ -7,8 +7,20 @@ export default function SubjectSelection() {
   const navigate = useNavigate();
   const selectedClass = location.state?.selectedClass;
 
-  const subjects = ['Maths', 'Science', 'English'];
-  const subParts = ['Materials', 'Videos', 'Quiz'];
+  // Match teacher upload subjects exactly
+  const subjects = [
+    "Mathematics",
+    "Science",
+    "English",
+    "Social Studies",
+    "Hindi",
+    "Marathi",
+    "Computer",
+    "EVS",
+    "Sanskrit"
+  ];
+
+  const subParts = ["Materials", "Videos", "Quiz"];
 
   const handleSubpartClick = (subject, subpart) => {
     navigate('/content', { state: { selectedClass, subject, subpart } });
@@ -27,7 +39,7 @@ export default function SubjectSelection() {
 
       <div className="subject-selection-container">
         <h2 className="heading">
-          📚 Learning Hub — {selectedClass ? `${selectedClass}` : 'Select Class'}
+          📚 Learning Hub — {selectedClass ? `Class ${selectedClass}` : 'Select Class'}
         </h2>
 
         <div className="subjects-grid">
