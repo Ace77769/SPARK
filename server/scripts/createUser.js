@@ -6,28 +6,63 @@ const User = require('../models/User');
 
 (async () => {
   try {
+    console.log('🔄 Connecting to database...');
     await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('✅ Connected to database');
 
-    const username = process.argv[2] || 'teacher';
-    const password = process.argv[3] || '1234';
-    const role = process.argv[4] || (username === 'teacher' ? 'teacher' : 'user');
+    // Clear all existing users
+    console.log('🗑️ Clearing existing users...');
+    await User.deleteMany({});
+    console.log('✅ Existing users cleared');
 
-    const existing = await User.findOne({ username });
-    if (existing) {
-      console.log('User exists — updating password and role...');
-      existing.passwordHash = await bcrypt.hash(password, 10);
-      existing.role = role;
-      await existing.save();
-      console.log('Updated', username);
-      process.exit(0);
-    }
+    // Create teacher user
+    console.log('👨‍🏫 Creating teacher user...');
+    const teacherHash = await bcrypt.hash('1234', 10);
+    const teacher = await User.create({
+      username: 'teacher',
+      passwordHash: teacherHash,
+      role: 'teacher'
+    });
+    console.log('✅ Teacher created:', teacher.username);
 
-    const hash = await bcrypt.hash(password, 10);
-    const u = await User.create({ username, passwordHash: hash, role });
-    console.log('Created user:', u.username, 'role=', u.role);
+    // Create admin user
+    console.log('👤 Creating admin user...');
+    const adminHash = await bcrypt.hash('1234', 10);
+    const admin = await User.create({
+      username: 'admin',
+      passwordHash: adminHash,
+      role: 'teacher'
+    });
+    console.log('✅ Admin created:', admin.username);
+
+    // Create student user
+    console.log('👨‍🎓 Creating student user...');
+    const studentHash = await bcrypt.hash('1234', 10);
+    const student = await User.create({
+      username: 'student',
+      passwordHash: studentHash,
+      role: 'user'
+    });
+    console.log('✅ Student created:', student.username);
+
+    // Test all passwords
+    console.log('\n🧪 Testing passwords...');
+    const teacherTest = await bcrypt.compare('1234', teacher.passwordHash);
+    const adminTest = await bcrypt.compare('1234', admin.passwordHash);
+    const studentTest = await bcrypt.compare('1234', student.passwordHash);
+
+    console.log('Teacher test:', teacherTest ? '✅ PASS' : '❌ FAIL');
+    console.log('Admin test:', adminTest ? '✅ PASS' : '❌ FAIL');
+    console.log('Student test:', studentTest ? '✅ PASS' : '❌ FAIL');
+
+    console.log('\n🎉 NEW LOGIN CREDENTIALS:');
+    console.log('Teacher: username="teacher", password="1234"');
+    console.log('Admin:   username="admin", password="1234"');
+    console.log('Student: username="student", password="1234"');
+
     process.exit(0);
   } catch (err) {
-    console.error(err);
+    console.error('❌ Error:', err);
     process.exit(1);
   }
 })();
