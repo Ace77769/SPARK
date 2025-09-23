@@ -43,12 +43,13 @@ function AppWrapper() {
     <div style={{ padding: 12 }}>
       {/* Header */}
       <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 20
+         display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "60px",
+      background: "#f0f0f0"
       }}>
-        <h1 style={{ margin: 0 }}>SPARK</h1>
+        <h1 style={{ margin: 0 }}>LEARNING HUB PLATFORM</h1>
 
         {user ? (
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
