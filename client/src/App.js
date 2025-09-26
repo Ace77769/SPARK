@@ -11,6 +11,7 @@ import MaterialPage from './components/MaterialPage';
 // teacher pages
 import TeacherDashboard from "./teacher/teacherdashboard";
 import AddMaterial from "./teacher/AddMaterial";
+import AddVideo from "./teacher/AddVideo"; // ✅ NEW
 import CreateQuiz from "./teacher/CreateQuiz";
 import ManageContent from "./teacher/ManageContent";
 
@@ -44,17 +45,18 @@ function AppWrapper() {
       {/* Header */}
       <div style={{
          display: "flex",
-      justifyContent: "center",
+      justifyContent: "space-between",
       alignItems: "center",
       height: "60px",
-      background: "#f0f0f0"
+      background: "#f0f0f0",
+      padding: "0 20px"
       }}>
-        <h1 style={{ margin: 0 }}>LEARNING HUB PLATFORM</h1>
+        <h1 style={{ margin: 0 }}>SPARK - Learning Hub Platform</h1>
 
         {user ? (
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 14, color: "#333" }}>
-              Welcome, <b>{user.username}</b>
+              Welcome, <b>{user.username}</b> ({user.role})
             </span>
             {/* pass setUser so LogoutButton can clear state when logging out */}
             <LogoutButton onLogout={() => setUser(null)} />
@@ -117,6 +119,14 @@ function AppWrapper() {
           element={
             <ProtectedRoute requiredRole="teacher">
               <AddMaterial />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/add-video"
+          element={
+            <ProtectedRoute requiredRole="teacher">
+              <AddVideo />
             </ProtectedRoute>
           }
         />

@@ -10,6 +10,7 @@ export default function TeacherNav() {
       <div className="links">
         <Link to="/teacher/dashboard">Dashboard</Link>
         <Link to="/teacher/add-material">Add Material</Link>
+        <Link to="/teacher/add-video">Add Video</Link>
         <Link to="/teacher/create-quiz">Create Quiz</Link>
         <Link to="/teacher/manage">Manage Content</Link>
       </div>

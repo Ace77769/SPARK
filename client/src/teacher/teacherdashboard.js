@@ -12,8 +12,12 @@ export default function TeacherDashboard() {
         <h1>Welcome Teacher 👩‍🏫</h1>
         <div className="teacher-cards">
           <Link to="/teacher/add-material" className="card">
-            <h3>➕ Add Materials</h3>
+            <h3>📄 Add Materials</h3>
             <p>Upload PDFs, notes or textbooks</p>
+          </Link>
+          <Link to="/teacher/add-video" className="card video-card-dashboard">
+            <h3>🎥 Add Videos</h3>
+            <p>Upload videos or link YouTube content</p>
           </Link>
           <Link to="/teacher/create-quiz" className="card">
             <h3>📝 Create Quiz</h3>
