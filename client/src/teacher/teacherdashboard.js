@@ -1,4 +1,4 @@
-// src/teacher/TeacherDashboard.js
+// client/src/teacher/TeacherDashboard.js
 import React from "react";
 import TeacherNav from "./TeacherNav";
 import { Link } from "react-router-dom";
@@ -19,9 +19,13 @@ export default function TeacherDashboard() {
             <h3>🎥 Add Videos</h3>
             <p>Upload videos or link YouTube content</p>
           </Link>
-          <Link to="/teacher/create-quiz" className="card">
+          <Link to="/teacher/create-quiz" className="card quiz-card-dashboard">
             <h3>📝 Create Quiz</h3>
-            <p>Build multiple-choice quizzes</p>
+            <p>Build interactive multiple-choice quizzes</p>
+          </Link>
+          <Link to="/teacher/manage-quizzes" className="card quiz-manage-card">
+            <h3>🎯 Manage Quizzes</h3>
+            <p>View, edit and analyze quiz performance</p>
           </Link>
           <Link to="/teacher/manage" className="card">
             <h3>🗂️ Manage Content</h3>

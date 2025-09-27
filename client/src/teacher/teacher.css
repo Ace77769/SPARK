@@ -64,6 +64,26 @@
   color: white !important;
 }
 
+.quiz-card-dashboard {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;
+  color: white !important;
+}
+
+.quiz-card-dashboard:hover {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+  color: white !important;
+}
+
+.quiz-manage-card {
+  background: linear-gradient(135deg, #059669, #10b981) !important;
+  color: white !important;
+}
+
+.quiz-manage-card:hover {
+  background: linear-gradient(135deg, #047857, #059669) !important;
+  color: white !important;
+}
+
 .teacher-form {
   max-width: 500px;
   margin: 30px auto;

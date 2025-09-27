@@ -1,3 +1,4 @@
+// client/src/components/ContentPage.js
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ContentPage.css";
@@ -7,11 +8,17 @@ export default function ContentPage() {
   const navigate = useNavigate();
   const { selectedClass, subject, subpart } = location.state || {};
 
-  const categories = ["Textbooks", "Question Papers", "Videos"]; // ✅ Added Videos
+  const categories = ["Textbooks", "Question Papers", "Videos"]; // Materials categories
 
   const handleCategoryClick = (category) => {
     navigate("/materials", {
       state: { selectedClass, subject, category },
+    });
+  };
+
+  const handleQuizClick = () => {
+    navigate("/quiz/list", {
+      state: { selectedClass, subject }
     });
   };
 
@@ -65,6 +72,23 @@ export default function ContentPage() {
             <div className="category-icon">🎥</div>
             <h3>Watch Videos</h3>
             <p>Educational videos and tutorials for {subject}</p>
+          </div>
+        </div>
+      ) : subpart === "Quiz" ? (
+        // ✅ NEW: Direct navigation to quizzes
+        <div className="direct-quiz-access">
+          <div
+            className="category-card quiz-category featured"
+            onClick={handleQuizClick}
+          >
+            <div className="category-icon">📝</div>
+            <h3>Take Quizzes</h3>
+            <p>Test your knowledge with interactive quizzes for {subject}</p>
+            <div className="quiz-features">
+              <span>✅ Instant Results</span>
+              <span>🏆 Track Progress</span>
+              <span>💡 Learn from Mistakes</span>
+            </div>
           </div>
         </div>
       ) : (

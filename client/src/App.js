@@ -8,12 +8,19 @@ import SubjectSelection from './components/SubjectSelection';
 import ContentPage from './components/ContentPage';
 import MaterialPage from './components/MaterialPage';
 
+// ✅ Quiz components
+import QuizList from './components/QuizList';
+import TakeQuiz from './components/TakeQuiz';
+import QuizResult from './components/QuizResults';
+import QuizResults from './components/QuizResults'; // ✅ Student attempt history
+
 // teacher pages
 import TeacherDashboard from "./teacher/teacherdashboard";
 import AddMaterial from "./teacher/AddMaterial";
-import AddVideo from "./teacher/AddVideo"; // ✅ NEW
+import AddVideo from "./teacher/AddVideo";
 import CreateQuiz from "./teacher/CreateQuiz";
 import ManageContent from "./teacher/ManageContent";
+import ManageQuizzes from "./teacher/ManageQuizzes"; // ✅ Teacher quiz management
 
 import ProtectedRoute from './components/ProtectedRoute';
 import LogoutButton from './components/LogoutButton';
@@ -105,6 +112,40 @@ function AppWrapper() {
           }
         />
 
+        {/* ✅ Quiz routes for students */}
+        <Route
+          path="/quiz/list"
+          element={
+            <ProtectedRoute>
+              <QuizList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/quiz/take"
+          element={
+            <ProtectedRoute>
+              <TakeQuiz />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/quiz/result"
+          element={
+            <ProtectedRoute>
+              <QuizResult />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/quiz/results"
+          element={
+            <ProtectedRoute>
+              <QuizResults />
+            </ProtectedRoute>
+          }
+        />
+
         {/* teacher routes: require teacher role */}
         <Route
           path="/teacher/dashboard"
@@ -143,6 +184,14 @@ function AppWrapper() {
           element={
             <ProtectedRoute requiredRole="teacher">
               <ManageContent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/manage-quizzes"
+          element={
+            <ProtectedRoute requiredRole="teacher">
+              <ManageQuizzes />
             </ProtectedRoute>
           }
         />
