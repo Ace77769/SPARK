@@ -6,7 +6,15 @@ import './TakeQuiz.css';
 export default function TakeQuiz() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { quizId } = location.state || {};
+  const { quizId, selectedClass, subject } = location.state || {};
+  
+  // Debug logging
+  console.log('TakeQuiz component loaded with:', {
+    quizId,
+    selectedClass,
+    subject,
+    locationState: location.state
+  });
   
   const [quiz, setQuiz] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -30,10 +38,12 @@ export default function TakeQuiz() {
   // Fetch quiz data
   useEffect(() => {
     if (!quizId) {
-      navigate('/class');
+      setError('Quiz ID is missing. Please start the quiz from the quiz list.');
+      setLoading(false);
       return;
     }
 
+    console.log('Fetching quiz with ID:', quizId);
     fetchQuiz();
   }, [quizId, navigate]);
 
@@ -126,6 +136,13 @@ export default function TakeQuiz() {
         timeTaken: 0 // Could track per-question timing if needed
       }));
 
+      console.log('Submitting quiz:', {
+        quizId,
+        studentUsername: getCurrentUser(),
+        answers: formattedAnswers,
+        timeTaken: timeTakenMinutes
+      });
+
       const response = await fetch(`/api/quiz/${quizId}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -137,17 +154,23 @@ export default function TakeQuiz() {
       });
 
       const data = await response.json();
+      console.log('Quiz submission response:', data);
 
       if (data.success) {
-        // Navigate to results page with quiz result data
+        // Navigate to results page with complete quiz result data
+        const navigationState = {
+          result: data.result,
+          quiz: quiz,
+          answers: answers,
+          quizId: quiz._id, // Ensure quiz ID is included
+          selectedClass: quiz.stdClass || location.state?.selectedClass,
+          subject: quiz.subject || location.state?.subject
+        };
+        
+        console.log('Navigating to result with state:', navigationState);
+        
         navigate('/quiz/result', { 
-          state: { 
-            result: data.result,
-            quiz: quiz,
-            answers: answers,
-            selectedClass: quiz.stdClass,
-            subject: quiz.subject
-          } 
+          state: navigationState
         });
       } else {
         setError(data.message || 'Failed to submit quiz');
@@ -158,7 +181,7 @@ export default function TakeQuiz() {
       setError('Failed to submit quiz');
       setSubmitting(false);
     }
-  }, [quizId, quiz, answers, submitting, startTime, timeLeft, navigate]);
+  }, [quizId, quiz, answers, submitting, startTime, timeLeft, navigate, location.state]);
 
   if (loading) {
     return (
@@ -177,9 +200,27 @@ export default function TakeQuiz() {
         <div className="error-message">
           <h3>❌ Error</h3>
           <p>{error}</p>
-          <button onClick={() => navigate(-1)} className="back-btn">
-            ← Go Back
-          </button>
+          <div style={{ marginTop: '20px', fontSize: '14px', color: '#9ca3af' }}>
+            <p><strong>Debug Info:</strong></p>
+            <p>Quiz ID: {quizId || 'Not provided'}</p>
+            <p>Selected Class: {selectedClass || 'Not provided'}</p>
+            <p>Subject: {subject || 'Not provided'}</p>
+          </div>
+          <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
+            <button onClick={() => navigate('/class')} className="back-btn">
+              🏠 Go to Home
+            </button>
+            {selectedClass && subject && (
+              <button 
+                onClick={() => navigate('/quiz/list', { 
+                  state: { selectedClass, subject } 
+                })} 
+                className="back-btn"
+              >
+                📝 Back to Quizzes
+              </button>
+            )}
+          </div>
         </div>
       </div>
     );
