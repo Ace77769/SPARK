@@ -1,45 +1,72 @@
 /* client/src/components/QuizList.css */
 
 .quiz-list-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 30px 20px;
+  padding: 40px 20px;
   color: white;
   min-height: calc(100vh - 120px);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  position: relative;
+  overflow-x: hidden;
 }
+
+/* Removed fixed background that was causing z-index issues */
 
 .quiz-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 20px;
+  background: rgba(31, 41, 55, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .quiz-list-header h2 {
   margin: 0;
-  font-size: 28px;
-  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
 }
 
 .back-btn {
-  background: #374151;
+  background: linear-gradient(135deg, #475569, #334155);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .back-btn:hover {
-  background: #4b5563;
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, #64748b, #475569);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .loading-spinner {
@@ -103,18 +130,31 @@
 
 .quizzes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 30px;
+  position: relative;
 }
 
 .quiz-card {
-  background: linear-gradient(135deg, #1f2937, #111827);
-  border-radius: 16px;
-  padding: 25px;
-  border: 1px solid #374151;
+  background: rgba(31, 41, 55, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .quiz-card::before {
@@ -124,13 +164,13 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
 }
 
 .quiz-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-  border-color: #3b82f6;
+  box-shadow: 0 20px 50px rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.5);
 }
 
 .quiz-header {
@@ -211,78 +251,154 @@
 .start-quiz-btn,
 .view-results-btn {
   flex: 1;
-  padding: 12px 16px;
+  padding: 14px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 14px;
+  font-size: 15px;
+  position: relative;
 }
 
 .start-quiz-btn {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
 .start-quiz-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
 }
 
 .view-results-btn {
-  background: #374151;
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
   color: white;
-  border: 1px solid #4b5563;
+  border: 1px solid #64748b;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .view-results-btn:hover {
-  background: #4b5563;
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .quiz-list-container {
-    padding: 20px 15px;
+    padding: 15px 10px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   }
-  
+
   .quiz-list-header {
     flex-direction: column;
     align-items: stretch;
+    padding: 20px 15px;
+    margin-bottom: 25px;
+    gap: 15px;
+  }
+
+  .quiz-list-header h2 {
+    font-size: 22px;
     text-align: center;
   }
-  
-  .quiz-list-header h2 {
-    font-size: 24px;
+
+  .back-btn {
+    width: 100%;
+    padding: 12px 20px;
   }
-  
+
   .quizzes-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .quiz-card {
-    padding: 20px;
+    padding: 20px 15px;
   }
-  
+
   .quiz-header {
     flex-direction: column;
     gap: 10px;
-  }
-  
-  .quiz-badge {
-    align-self: flex-start;
-  }
-  
-  .quiz-meta {
-    flex-direction: column;
-    gap: 5px;
     align-items: flex-start;
   }
-  
+
+  .quiz-title {
+    font-size: 18px;
+  }
+
+  .quiz-badge {
+    align-self: flex-start;
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+
+  .quiz-description {
+    font-size: 13px;
+    -webkit-line-clamp: 3;
+  }
+
+  .quiz-details {
+    gap: 6px;
+  }
+
+  .quiz-detail {
+    font-size: 13px;
+  }
+
+  .detail-icon {
+    font-size: 14px;
+  }
+
+  .quiz-meta {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 11px;
+  }
+
   .quiz-actions {
     flex-direction: column;
+    gap: 10px;
+  }
+
+  .start-quiz-btn,
+  .view-results-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quiz-list-container {
+    padding: 10px 8px;
+  }
+
+  .quiz-list-header {
+    padding: 15px 12px;
+  }
+
+  .quiz-list-header h2 {
+    font-size: 20px;
+  }
+
+  .quiz-card {
+    padding: 15px 12px;
+  }
+
+  .quiz-title {
+    font-size: 16px;
+  }
+
+  .quiz-detail {
+    font-size: 12px;
+  }
+
+  .start-quiz-btn,
+  .view-results-btn {
+    padding: 12px;
+    font-size: 13px;
   }
 }

@@ -364,6 +364,26 @@
   background: linear-gradient(90deg, #10b981, #059669);
 }
 
+.view-attempt-details-btn {
+  margin-top: 15px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.view-attempt-details-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+}
+
 .statistics-card {
   background: rgba(30, 41, 59, 0.6);
   padding: 30px;

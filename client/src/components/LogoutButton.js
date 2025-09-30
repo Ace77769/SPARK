@@ -29,16 +29,29 @@ export default function LogoutButton({ className, style, onLogout }) {
       onClick={handleLogout}
       className={className}
       style={{
-        padding: "8px 12px",
-        borderRadius: 8,
-        background: "#ef4444",
+        padding: "10px 24px",
+        borderRadius: "25px",
+        background: "#FF4757",
         color: "white",
-        border: "none",
+        border: "3px solid #fff",
         cursor: "pointer",
+        fontWeight: "bold",
+        fontSize: "1rem",
+        fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+        transition: "all 0.3s ease",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
         ...style
       }}
+      onMouseEnter={(e) => {
+        e.target.style.transform = "scale(1.1)";
+        e.target.style.boxShadow = "0 6px 15px rgba(0, 0, 0, 0.2)";
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.transform = "scale(1)";
+        e.target.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.15)";
+      }}
     >
-      Logout
+      👋 Logout
     </button>
   );
 }

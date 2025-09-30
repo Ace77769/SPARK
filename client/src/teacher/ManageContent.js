@@ -50,7 +50,12 @@ export default function ManageContent() {
   };
 
   return (
-    <div className="manage-container">
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      padding: '40px 20px'
+    }}>
+      <div className="manage-container">
       <h2>📂 Manage Uploaded Content</h2>
 
       {/* Filter buttons */}
@@ -228,6 +233,7 @@ export default function ManageContent() {
           ))
         )}
       </div>
+    </div>
     </div>
   );
 }

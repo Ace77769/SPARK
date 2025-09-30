@@ -103,13 +103,44 @@ export default function QuizResults() {
   };
 
   const handleRetakeQuiz = () => {
-    navigate('/quiz/take', { 
-      state: { 
-        quizId, 
-        selectedClass, 
-        subject 
-      } 
+    navigate('/quiz/take', {
+      state: {
+        quizId,
+        selectedClass,
+        subject
+      }
     });
+  };
+
+  const handleViewAttemptDetails = async (attemptId) => {
+    try {
+      const response = await fetch(`/api/quiz/attempt/${attemptId}`);
+      const data = await response.json();
+
+      if (data.success) {
+        navigate('/quiz/result', {
+          state: {
+            result: {
+              score: data.attempt.score,
+              totalQuestions: data.attempt.totalQuestions,
+              percentage: data.attempt.percentage,
+              isPassed: data.attempt.isPassed,
+              timeTaken: data.attempt.timeTaken,
+              detailedAnswers: data.attempt.detailedAnswers
+            },
+            quiz: data.attempt.quizId,
+            quizId: data.attempt.quizId._id,
+            selectedClass,
+            subject
+          }
+        });
+      } else {
+        setError('Failed to load attempt details');
+      }
+    } catch (err) {
+      console.error('Error fetching attempt details:', err);
+      setError('Failed to load attempt details');
+    }
   };
 
   if (loading) {
@@ -219,10 +250,10 @@ export default function QuizResults() {
                       {formatDate(attempt.submittedAt)}
                     </span>
                   </div>
-                  
+
                   <div className="attempt-details">
                     <div className="score-info">
-                      <span 
+                      <span
                         className="score"
                         style={{ color: getScoreColor(attempt.percentage) }}
                       >
@@ -232,7 +263,7 @@ export default function QuizResults() {
                         {attempt.isPassed ? 'Passed' : 'Failed'}
                       </span>
                     </div>
-                    
+
                     <div className="time-taken">
                       ⏱️ {attempt.timeTaken} minutes
                     </div>
@@ -240,15 +271,22 @@ export default function QuizResults() {
 
                   <div className="attempt-progress">
                     <div className="progress-bar">
-                      <div 
+                      <div
                         className="progress-fill"
-                        style={{ 
+                        style={{
                           width: `${attempt.percentage}%`,
                           backgroundColor: getScoreColor(attempt.percentage)
                         }}
                       />
                     </div>
                   </div>
+
+                  <button
+                    className="view-attempt-details-btn"
+                    onClick={() => handleViewAttemptDetails(attempt._id)}
+                  >
+                    👁️ View Detailed Results
+                  </button>
                 </div>
               ))}
             </div>

@@ -1,13 +1,119 @@
-body {
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Comic Sans MS', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 50%, #FFDAB9 100%);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ============================================
+   GLOBAL INPUT TEXT VISIBILITY FIX
+   Ensures all input/textarea/select text is visible
+   ============================================ */
+
+/* Force visible white text on ALL inputs by default (for dark backgrounds) */
+input:not(.username-input):not(.password-input),
+textarea,
+select {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Placeholder styling - visible on dark backgrounds */
+input:not(.username-input):not(.password-input)::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.65) !important;
+  opacity: 1 !important;
+}
+
+input:not(.username-input):not(.password-input)::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+input:not(.username-input):not(.password-input)::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.65) !important;
+  opacity: 1 !important;
+}
+
+input:not(.username-input):not(.password-input):-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+/* Special handling for light background inputs (Login page) */
+.username-input,
+.password-input {
+  color: #000000 !important;
+  font-weight: 600 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
+.username-input::placeholder,
+.password-input::placeholder {
+  color: #8B7355 !important;
+  opacity: 1 !important;
+}
+
+.username-input::-webkit-input-placeholder,
+.password-input::-webkit-input-placeholder {
+  color: #8B7355 !important;
+}
+
+.username-input::-moz-placeholder,
+.password-input::-moz-placeholder {
+  color: #8B7355 !important;
+  opacity: 1 !important;
+}
+
+.username-input:-ms-input-placeholder,
+.password-input:-ms-input-placeholder {
+  color: #8B7355 !important;
+}
+
+/* Ensure select options are visible */
+select option {
+  color: #000000 !important;
+  background: #ffffff !important;
+}
+
+/* File input text */
+input[type="file"] {
+  color: #ffffff !important;
+}
+
+input[type="file"]::file-selector-button {
+  color: #000000 !important;
+  background: #ffffff !important;
+}
+
+/* ============================================
+   END GLOBAL INPUT TEXT VISIBILITY FIX
+   ============================================ */

@@ -42,9 +42,17 @@ export default function AddMaterial() {
   };
 
   return (
-    <div className="upload-container">
-      <h2>📤 Add Material</h2>
-      <form onSubmit={handleUpload} className="upload-form">
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      padding: '40px 20px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
+      <div className="upload-container">
+        <h2>📤 Add Material</h2>
+        <form onSubmit={handleUpload} className="upload-form">
         <input
           type="text"
           placeholder="Enter Title"
@@ -93,6 +101,7 @@ export default function AddMaterial() {
         <button type="submit">Upload</button>
       </form>
       {message && <p className="upload-msg">{message}</p>}
+      </div>
     </div>
   );
 }

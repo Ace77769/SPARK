@@ -164,7 +164,11 @@ export default function CreateQuiz() {
   };
 
   return (
-    <>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      paddingBottom: '40px'
+    }}>
       <TeacherNav />
       <div className="create-quiz-container">
         <h2>📝 Create New Quiz</h2>
@@ -373,6 +377,6 @@ export default function CreateQuiz() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

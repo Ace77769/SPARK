@@ -6,10 +6,14 @@ import "./teacher.css";
 
 export default function TeacherDashboard() {
   return (
-    <div>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 50%, #FFDAB9 100%)',
+      padding: '20px'
+    }}>
       <TeacherNav />
       <div className="teacher-dashboard">
-        <h1>Welcome Teacher 👩‍🏫</h1>
+        <h1>🌟 Welcome Teacher! 👩‍🏫</h1>
         <div className="teacher-cards">
           <Link to="/teacher/add-material" className="card">
             <h3>📄 Add Materials</h3>

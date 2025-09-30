@@ -12,7 +12,12 @@
   --glass: rgba(255,255,255,0.02);
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body,html,#root{height:100%}
 
 .login-wrap{
@@ -148,8 +153,23 @@ body,html,#root{height:100%}
 
 @keyframes spin{ to { transform:rotate(360deg) } }
 
+/* medium screens */
+@media (max-width: 768px){
+  .login-wrap{ padding: 30px 15px; }
+  .login-card{ padding: 24px; max-width: 400px; }
+  .login-title{ font-size: 20px; }
+  .text-input{ font-size: 15px; padding: 12px; }
+  .primary-btn{ font-size: 15px; }
+}
+
 /* small screens */
-@media (max-width:480px){
-  .login-card{ padding:20px; margin: 20px; }
-  .login-wrap{ padding:30px 10px; }
+@media (max-width: 480px){
+  .login-card{ padding: 20px; margin: 20px 10px; max-width: 100%; }
+  .login-wrap{ padding: 20px 10px; }
+  .login-title{ font-size: 18px; margin-bottom: 15px; }
+  .text-input{ font-size: 14px; padding: 10px 12px; }
+  .primary-btn{ font-size: 14px; padding: 12px; }
+  .row-between{ flex-direction: column; align-items: flex-start; gap: 10px; }
+  .remember, .small-link{ font-size: 12px; }
+  .error{ font-size: 12px; padding: 10px; }
 }

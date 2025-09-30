@@ -2,53 +2,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 50%, #FFA726 100%);
-  border-bottom: 5px solid #FFD700;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  border-radius: 0 0 20px 20px;
+  padding: 12px 20px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
 }
 
 .teacher-nav .brand {
-  font-weight: 900;
-  font-size: 1.8rem;
-  color: white;
-  font-family: 'Comic Sans MS', Arial, sans-serif;
-  text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-  letter-spacing: 1px;
-}
-
-.teacher-nav .brand::before {
-  content: "👩‍🏫 ";
-}
-
-.teacher-nav .links {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  align-items: center;
+  font-weight: bold;
 }
 
 .teacher-nav .links a {
+  margin-left: 15px;
   text-decoration: none;
-  color: white;
-  font-family: 'Comic Sans MS', Arial, sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
-  border: 3px solid rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  color: #007bff;
+  transition: color 0.2s ease;
 }
 
 .teacher-nav .links a:hover {
-  background: rgba(255, 255, 255, 0.95);
-  color: #FF6347;
-  border-color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  color: #0056b3;
+  text-decoration: underline;
 }
 
 .teacher-dashboard {
@@ -371,50 +343,40 @@
   .teacher-nav {
     flex-direction: column;
     gap: 10px;
-    padding: 15px 20px;
   }
-
-  .teacher-nav .brand {
-    font-size: 1.5rem;
-  }
-
-  .teacher-nav .links {
-    gap: 8px;
-  }
-
+  
   .teacher-nav .links a {
-    font-size: 0.85rem;
-    padding: 8px 15px;
+    margin: 0 10px;
   }
-
+  
   .teacher-cards {
     flex-direction: column;
     align-items: center;
   }
-
+  
   .card {
     width: 100%;
     max-width: 300px;
   }
-
+  
   .manage-container {
     margin: 20px;
     padding: 20px;
   }
-
+  
   .material-item {
     flex-direction: column;
     gap: 15px;
   }
-
+  
   .material-info {
     margin-right: 0;
   }
-
+  
   .actions {
     justify-content: center;
   }
-
+  
   .filter-buttons {
     justify-content: flex-start;
   }

@@ -62,9 +62,17 @@ router.post('/create', async (req, res) => {
 // Get all quizzes (with optional filters)
 router.get('/', async (req, res) => {
   try {
-    const { stdClass, subject, creator } = req.query;
-    const filter = { isActive: true };
-    
+    const { stdClass, subject, creator, includeInactive } = req.query;
+    const filter = {};
+
+    // Only filter by isActive if not explicitly requesting inactive quizzes
+    // This allows teachers to see all quizzes in manage section
+    if (includeInactive !== 'true') {
+      filter.isActive = true;
+    }
+
+    console.log('Fetching quizzes with filter:', filter, 'includeInactive:', includeInactive);
+
     if (stdClass) filter.stdClass = stdClass;
     if (subject) filter.subject = subject;
     if (creator) filter.creator = creator;
@@ -72,6 +80,8 @@ router.get('/', async (req, res) => {
     const quizzes = await Quiz.find(filter)
       .select('-questions.correctAnswer -questions.explanation') // Hide answers from students
       .sort({ createdAt: -1 });
+
+    console.log(`Found ${quizzes.length} quizzes. Active: ${quizzes.filter(q => q.isActive).length}, Inactive: ${quizzes.filter(q => !q.isActive).length}`);
 
     res.json({ success: true, quizzes });
   } catch (error) {
@@ -169,7 +179,7 @@ router.post('/:id/submit', async (req, res) => {
 
     await attempt.save();
 
-    // Prepare response
+    // Prepare response with detailed question results
     const response = {
       success: true,
       message: 'Quiz submitted successfully',
@@ -178,17 +188,25 @@ router.post('/:id/submit', async (req, res) => {
         totalQuestions: quiz.questions.length,
         percentage: attempt.percentage,
         isPassed,
-        timeTaken: attempt.timeTaken
+        timeTaken: attempt.timeTaken,
+        attemptId: attempt._id
       }
     };
 
-    // Include correct answers if allowed
+    // Include detailed answers if allowed
     if (quiz.showCorrectAnswers) {
-      response.result.correctAnswers = quiz.questions.map((q, index) => ({
-        questionIndex: index,
-        correctAnswer: q.correctAnswer,
-        explanation: q.explanation
-      }));
+      response.result.detailedAnswers = quiz.questions.map((q, index) => {
+        const userAnswer = processedAnswers.find(a => a.questionId.toString() === q._id.toString());
+        return {
+          questionId: q._id,
+          question: q.question,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          userAnswer: userAnswer ? userAnswer.selectedAnswer : -1,
+          isCorrect: userAnswer ? userAnswer.isCorrect : false,
+          explanation: q.explanation
+        };
+      });
     }
 
     res.json(response);
@@ -210,6 +228,46 @@ router.get('/attempts/:studentUsername', async (req, res) => {
   } catch (error) {
     console.error('Get attempts error:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch attempts' });
+  }
+});
+
+// Get detailed attempt with answers
+router.get('/attempt/:attemptId', async (req, res) => {
+  try {
+    const { attemptId } = req.params;
+    const attempt = await QuizAttempt.findById(attemptId)
+      .populate('quizId');
+
+    if (!attempt) {
+      return res.status(404).json({ success: false, message: 'Attempt not found' });
+    }
+
+    const quiz = attempt.quizId;
+
+    // Build detailed results
+    const detailedAnswers = quiz.questions.map((q) => {
+      const userAnswer = attempt.answers.find(a => a.questionId.toString() === q._id.toString());
+      return {
+        questionId: q._id,
+        question: q.question,
+        options: q.options,
+        correctAnswer: quiz.showCorrectAnswers ? q.correctAnswer : undefined,
+        userAnswer: userAnswer ? userAnswer.selectedAnswer : -1,
+        isCorrect: userAnswer ? userAnswer.isCorrect : false,
+        explanation: quiz.showCorrectAnswers ? q.explanation : undefined
+      };
+    });
+
+    res.json({
+      success: true,
+      attempt: {
+        ...attempt.toObject(),
+        detailedAnswers
+      }
+    });
+  } catch (error) {
+    console.error('Get attempt details error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch attempt details' });
   }
 });
 

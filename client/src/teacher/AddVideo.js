@@ -94,7 +94,14 @@ export default function AddVideo() {
   };
 
   return (
-    <>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      padding: '40px 20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    }}>
       <TeacherNav />
       <div className="add-video-container">
         <h2>🎥 Add Video Content</h2>
@@ -233,6 +240,6 @@ export default function AddVideo() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

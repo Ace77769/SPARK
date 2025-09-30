@@ -19,9 +19,15 @@ export default function ManageQuizzes() {
   const fetchQuizzes = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/quiz');
+      // Add includeInactive=true to fetch all quizzes (both active and inactive)
+      console.log('Fetching quizzes with includeInactive=true...');
+      const response = await fetch('/api/quiz?includeInactive=true');
       const data = await response.json();
-      
+
+      console.log('Received quizzes:', data.quizzes?.length, 'quizzes');
+      console.log('Active:', data.quizzes?.filter(q => q.isActive).length);
+      console.log('Inactive:', data.quizzes?.filter(q => !q.isActive).length);
+
       if (data.success) {
         setQuizzes(data.quizzes);
       } else {
@@ -122,22 +128,22 @@ export default function ManageQuizzes() {
   };
 
   const getFilteredQuizzes = () => {
-    switch (filter) {
-      case 'active':
-        return quizzes.filter(q => q.isActive);
-      case 'inactive':
-        return quizzes.filter(q => !q.isActive);
-      case 'all':
-      default:
-        return quizzes; // Show all quizzes regardless of status
+    // First, filter by status (all, active, inactive)
+    let filtered = quizzes;
+
+    // Apply status filter
+    if (filter === 'active') {
+      filtered = quizzes.filter(q => q.isActive);
+    } else if (filter === 'inactive') {
+      filtered = quizzes.filter(q => !q.isActive);
+    } else if (filter === 'all') {
+      filtered = quizzes; // Show all quizzes regardless of status
+    } else if (subjects.includes(filter)) {
+      // If filter is a subject name, filter by that subject but show all statuses
+      filtered = quizzes.filter(q => q.subject === filter);
     }
-    
-    // If filter is a subject name, filter by that subject
-    if (subjects.includes(filter)) {
-      return quizzes.filter(q => q.subject === filter);
-    }
-    
-    return quizzes;
+
+    return filtered;
   };
 
   const getQuizStats = (quizId) => {
@@ -155,7 +161,10 @@ export default function ManageQuizzes() {
 
   if (loading) {
     return (
-      <>
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)'
+      }}>
         <TeacherNav />
         <div className="manage-quizzes-container">
           <div className="loading-spinner">
@@ -163,12 +172,16 @@ export default function ManageQuizzes() {
             <p>Loading quizzes...</p>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      paddingBottom: '40px'
+    }}>
       <TeacherNav />
       <div className="manage-quizzes-container">
         <div className="page-header">
@@ -499,6 +512,6 @@ export default function ManageQuizzes() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

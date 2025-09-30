@@ -53,32 +53,61 @@ export default function Login() {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3), 0 0 40px rgba(251, 191, 36, 0.1); }
+          50% { box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), 0 0 60px rgba(251, 191, 36, 0.2); }
+        }
         .spark-float {
           animation: sparkFloat 6s ease-in-out infinite;
         }
+        .login-card-animated {
+          animation: slideUp 0.6s ease-out;
+        }
+        .logo-glow {
+          animation: glow 3s ease-in-out infinite;
+        }
+        .username-input,
+        .password-input {
+          color: #000000 !important;
+          font-weight: 600 !important;
+        }
         .username-input::placeholder,
         .password-input::placeholder {
-          color: rgba(255, 255, 255, 0.7) !important;
+          color: #8B7355 !important;
           opacity: 1 !important;
         }
         .username-input::-webkit-input-placeholder,
         .password-input::-webkit-input-placeholder {
-          color: rgba(255, 255, 255, 0.7);
+          color: #8B7355;
         }
         .username-input::-moz-placeholder,
         .password-input::-moz-placeholder {
-          color: rgba(255, 255, 255, 0.7);
+          color: #8B7355;
           opacity: 1;
         }
         .username-input:-ms-input-placeholder,
         .password-input:-ms-input-placeholder {
-          color: rgba(255, 255, 255, 0.7);
+          color: #8B7355;
         }
       `}</style>
-      
+
       <div style={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #581c87 0%, #1e40af 50%, #312e81 100%)',
+        background: 'linear-gradient(135deg, #87CEEB 0%, #98D8E8 50%, #B0E0E6 100%)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -125,78 +154,86 @@ export default function Login() {
           margin: '0 auto'
         }}>
           {/* Logo and Title */}
-          <div style={{ 
-            textAlign: 'center', 
+          <div style={{
+            textAlign: 'center',
             marginBottom: '3rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
           }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '5rem',
-              height: '5rem',
-              background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)',
-              borderRadius: '1rem',
-              marginBottom: '1.5rem',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-              transform: 'scale(1)',
-              transition: 'transform 0.3s ease',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '6rem',
+                height: '6rem',
+                background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+                borderRadius: '50%',
+                marginBottom: '1.5rem',
+                transform: 'scale(1)',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor: 'pointer',
+                border: '5px solid #fff',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.15) rotate(15deg)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+              }}
             >
-              <Sparkles style={{ width: '2.5rem', height: '2.5rem', color: 'white' }} />
+              <span style={{ fontSize: '3.5rem' }}>⭐</span>
             </div>
             <h1 style={{
-              fontSize: '3rem',
-              fontWeight: 'bold',
-              background: 'linear-gradient(to right, white, #fde047)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              color: 'transparent',
+              fontSize: '3.5rem',
+              fontWeight: '900',
+              color: '#FF6347',
               marginBottom: '0.5rem',
-              fontFamily: 'system-ui, -apple-system, sans-serif',
-              letterSpacing: '-0.02em'
+              fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+              textShadow: '4px 4px 8px rgba(0,0,0,0.2)',
+              letterSpacing: '2px'
             }}>
               SPARK
             </h1>
-            <p style={{ 
-              color: '#bfdbfe', 
-              fontSize: '1.25rem',
-              fontFamily: 'system-ui, -apple-system, sans-serif',
-              textAlign: 'center'
+            <p style={{
+              color: '#2C3E50',
+              fontSize: '1.4rem',
+              fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+              textAlign: 'center',
+              fontWeight: 'bold'
             }}>
-              Ignite Your Learning Journey
+              🚀 Let's Learn Together! 📚
             </p>
           </div>
 
           {/* Login Card - properly centered */}
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(16px)',
-            borderRadius: '2rem',
-            padding: '2.5rem',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            width: '100%',
-            boxSizing: 'border-box'
-          }}>
+          <div
+            className="login-card-animated"
+            style={{
+              background: '#fff',
+              borderRadius: '2rem',
+              padding: '2.5rem',
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
+              border: '5px solid #FFD700',
+              width: '100%',
+              boxSizing: 'border-box',
+              position: 'relative'
+            }}
+          >
             <form onSubmit={submit}>
               {/* Username Field */}
               <div style={{ marginBottom: '1.5rem' }}>
                 <label style={{
                   display: 'block',
-                  color: 'white',
-                  fontSize: '1rem',
-                  fontWeight: '600',
+                  color: '#2C3E50',
+                  fontSize: '1.1rem',
+                  fontWeight: '700',
                   marginBottom: '0.75rem',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                  fontFamily: "'Comic Sans MS', 'Arial', sans-serif"
                 }}>
-                  Username
+                  📝 Username
                 </label>
                 <input
                   type="text"
@@ -206,42 +243,43 @@ export default function Login() {
                   style={{
                     width: '100%',
                     padding: '1rem 1.25rem',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    borderRadius: '1rem',
-                    color: 'white',
+                    background: '#FFF9E6',
+                    border: '3px solid #FFD700',
+                    borderRadius: '15px',
+                    color: '#000000',
                     fontSize: '1.1rem',
                     outline: 'none',
                     transition: 'all 0.3s ease',
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                    boxSizing: 'border-box'
+                    fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+                    boxSizing: 'border-box',
+                    fontWeight: '600'
                   }}
                   className="username-input"
-                  placeholder="Enter your username"
+                  placeholder="Type your username here"
                   onFocus={(e) => {
-                    e.target.style.boxShadow = '0 0 0 3px rgba(251, 191, 36, 0.3)';
-                    e.target.style.borderColor = 'rgba(251, 191, 36, 0.6)';
-                    e.target.style.background = 'rgba(255, 255, 255, 0.08)';
+                    e.target.style.boxShadow = '0 0 0 4px rgba(255, 215, 0, 0.3)';
+                    e.target.style.borderColor = '#FFA500';
+                    e.target.style.transform = 'scale(1.02)';
                   }}
                   onBlur={(e) => {
                     e.target.style.boxShadow = 'none';
-                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                    e.target.style.borderColor = '#FFD700';
+                    e.target.style.transform = 'scale(1)';
                   }}
                 />
               </div>
-              
+
               {/* Password Field */}
               <div style={{ marginBottom: '2rem' }}>
                 <label style={{
                   display: 'block',
-                  color: 'white',
-                  fontSize: '1rem',
-                  fontWeight: '600',
+                  color: '#2C3E50',
+                  fontSize: '1.1rem',
+                  fontWeight: '700',
                   marginBottom: '0.75rem',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                  fontFamily: "'Comic Sans MS', 'Arial', sans-serif"
                 }}>
-                  Password
+                  🔒 Password
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
@@ -253,27 +291,28 @@ export default function Login() {
                       width: '100%',
                       padding: '1rem 1.25rem',
                       paddingRight: '3.5rem',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      borderRadius: '1rem',
-                      color: 'white',
+                      background: '#FFF9E6',
+                      border: '3px solid #FFD700',
+                      borderRadius: '15px',
+                      color: '#000000',
                       fontSize: '1.1rem',
                       outline: 'none',
                       transition: 'all 0.3s ease',
-                      fontFamily: 'system-ui, -apple-system, sans-serif',
-                      boxSizing: 'border-box'
+                      fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+                      boxSizing: 'border-box',
+                      fontWeight: '600'
                     }}
                     className="password-input"
-                    placeholder="Enter your password"
+                    placeholder="Type your password here"
                     onFocus={(e) => {
-                      e.target.style.boxShadow = '0 0 0 3px rgba(251, 191, 36, 0.3)';
-                      e.target.style.borderColor = 'rgba(251, 191, 36, 0.6)';
-                      e.target.style.background = 'rgba(255, 255, 255, 0.08)';
+                      e.target.style.boxShadow = '0 0 0 4px rgba(255, 215, 0, 0.3)';
+                      e.target.style.borderColor = '#FFA500';
+                      e.target.style.transform = 'scale(1.02)';
                     }}
                     onBlur={(e) => {
                       e.target.style.boxShadow = 'none';
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                      e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                      e.target.style.borderColor = '#FFD700';
+                      e.target.style.transform = 'scale(1)';
                     }}
                   />
                   <button
@@ -286,7 +325,7 @@ export default function Login() {
                       transform: 'translateY(-50%)',
                       background: 'none',
                       border: 'none',
-                      color: 'rgba(255, 255, 255, 0.6)',
+                      color: '#FFA500',
                       cursor: 'pointer',
                       transition: 'color 0.3s ease',
                       padding: '0.5rem',
@@ -294,8 +333,8 @@ export default function Login() {
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}
-                    onMouseEnter={(e) => e.target.style.color = 'white'}
-                    onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.6)'}
+                    onMouseEnter={(e) => e.target.style.color = '#FF6347'}
+                    onMouseLeave={(e) => e.target.style.color = '#FFA500'}
                   >
                     {show ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
                   </button>
@@ -305,15 +344,16 @@ export default function Login() {
               {/* Error Message */}
               {error && (
                 <div style={{
-                  background: 'rgba(239, 68, 68, 0.1)',
-                  color: '#fca5a5',
+                  background: '#FFE4E4',
+                  color: '#DC143C',
                   padding: '1rem 1.25rem',
-                  borderRadius: '0.75rem',
-                  border: '1px solid rgba(239, 68, 68, 0.2)',
-                  fontSize: '0.95rem',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  borderRadius: '15px',
+                  border: '3px solid #FF6347',
+                  fontSize: '1rem',
+                  fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
                   marginBottom: '1.5rem',
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  fontWeight: '600'
                 }}>
                   {error}
                 </div>
@@ -326,32 +366,33 @@ export default function Login() {
                 style={{
                   width: '100%',
                   padding: '1rem 1.25rem',
-                  background: loading ? '#6b7280' : 'linear-gradient(to right, #fbbf24, #f97316)',
+                  background: loading ? '#D3D3D3' : 'linear-gradient(135deg, #FFD700, #FFA500)',
                   color: 'white',
                   fontWeight: '700',
-                  borderRadius: '1rem',
-                  border: 'none',
-                  boxShadow: loading ? 'none' : '0 10px 25px rgba(251, 191, 36, 0.3)',
+                  borderRadius: '15px',
+                  border: loading ? 'none' : '3px solid #fff',
+                  boxShadow: loading ? 'none' : '0 8px 20px rgba(255, 165, 0, 0.3)',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   opacity: loading ? '0.7' : '1',
                   transition: 'all 0.3s ease',
-                  fontSize: '1.1rem',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontSize: '1.2rem',
+                  fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '0.75rem'
+                  gap: '0.75rem',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.2)'
                 }}
                 onMouseEnter={(e) => {
                   if (!loading) {
-                    e.target.style.transform = 'translateY(-2px)';
-                    e.target.style.boxShadow = '0 15px 35px rgba(251, 191, 36, 0.4)';
+                    e.target.style.transform = 'translateY(-3px) scale(1.02)';
+                    e.target.style.boxShadow = '0 12px 30px rgba(255, 165, 0, 0.5)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!loading) {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = '0 10px 25px rgba(251, 191, 36, 0.3)';
+                    e.target.style.transform = 'translateY(0) scale(1)';
+                    e.target.style.boxShadow = '0 8px 20px rgba(255, 165, 0, 0.3)';
                   }
                 }}
               >
@@ -360,18 +401,50 @@ export default function Login() {
                     <div style={{
                       width: '1.25rem',
                       height: '1.25rem',
-                      border: '2px solid white',
-                      borderTop: '2px solid transparent',
+                      border: '3px solid white',
+                      borderTop: '3px solid transparent',
                       borderRadius: '50%',
                       animation: 'spin 1s linear infinite'
                     }}></div>
                     <span>Signing In...</span>
                   </>
                 ) : (
-                  "Sign In"
+                  <>🚀 Sign In</>
                 )}
               </button>
             </form>
+          </div>
+
+          {/* Info Section */}
+          <div style={{
+            marginTop: '2rem',
+            padding: '1.5rem',
+            background: '#fff',
+            borderRadius: '20px',
+            border: '4px solid #FFD700',
+            textAlign: 'center',
+            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)'
+          }}>
+            <p style={{
+              color: '#FF6347',
+              fontSize: '1.1rem',
+              margin: '0 0 0.75rem 0',
+              fontWeight: '700',
+              fontFamily: "'Comic Sans MS', 'Arial', sans-serif"
+            }}>
+              🎓 Access Your Learning Dashboard
+            </p>
+            <p style={{
+              color: '#5A6C7D',
+              fontSize: '0.95rem',
+              margin: '0',
+              lineHeight: '1.6',
+              fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+              fontWeight: '600'
+            }}>
+              📚 Students: Access courses, videos, and quizzes<br />
+              👩‍🏫 Teachers: Manage content and track progress
+            </p>
           </div>
         </div>
       </div>

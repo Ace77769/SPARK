@@ -11,8 +11,8 @@ import MaterialPage from './components/MaterialPage';
 // ✅ Quiz components
 import QuizList from './components/QuizList';
 import TakeQuiz from './components/TakeQuiz';
-import QuizResult from './components/QuizResults';
-import QuizResults from './components/QuizResults'; // ✅ Student attempt history
+import QuizResult from './components/QuizResult'; // Single quiz result after submission
+import QuizResults from './components/QuizResults'; // Student attempt history
 
 // teacher pages
 import TeacherDashboard from "./teacher/teacherdashboard";
@@ -48,28 +48,55 @@ function AppWrapper() {
   }, [location]);
 
   return (
-    <div style={{ padding: 12 }}>
-      {/* Header */}
-      <div style={{
-         display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      height: "60px",
-      background: "#f0f0f0",
-      padding: "0 20px"
-      }}>
-        <h1 style={{ margin: 0 }}>SPARK - Learning Hub Platform</h1>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Header - Only show when user is logged in */}
+      {user && (
+        <div className="app-header" style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          minHeight: "80px",
+          background: "linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6347 100%)",
+          padding: "0 30px",
+          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+          borderBottom: "4px solid #FF6347"
+        }}>
+          <h1 style={{
+            margin: 0,
+            fontSize: "2rem",
+            fontWeight: "900",
+            color: "#fff",
+            fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+            textShadow: "3px 3px 6px rgba(0,0,0,0.2)",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px"
+          }}>
+            <span style={{ fontSize: "2.5rem" }}>⭐</span> SPARK Learning
+          </h1>
 
-        {user ? (
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 14, color: "#333" }}>
-              Welcome, <b>{user.username}</b> ({user.role})
+          <div className="app-header-user" style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <span style={{
+              fontSize: "1rem",
+              color: "#fff",
+              fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+              background: "rgba(255, 255, 255, 0.3)",
+              padding: "10px 20px",
+              borderRadius: "25px",
+              fontWeight: "bold",
+              border: "3px solid #fff",
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)"
+            }}>
+              👤 {user.username} <span style={{ fontSize: "0.85rem" }}>({user.role === 'teacher' ? '👩‍🏫 Teacher' : '👨‍🎓 Student'})</span>
             </span>
             {/* pass setUser so LogoutButton can clear state when logging out */}
             <LogoutButton onLogout={() => setUser(null)} />
           </div>
-        ) : null}
-      </div>
+        </div>
+      )}
 
       {/* Routes */}
       <Routes>

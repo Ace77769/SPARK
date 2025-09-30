@@ -1,6 +1,9 @@
 .App {
   text-align: center;
-
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
 }
 
 /* Allow the app to scroll naturally */
@@ -8,4 +11,55 @@ html, body, #root, .App {
   height: auto !important;
   min-height: 100%;
   overflow-y: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove any default borders or outlines */
+* {
+  border: none;
+  outline-offset: 0;
+}
+
+/* Mobile responsive header */
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column !important;
+    padding: 15px 20px !important;
+    gap: 15px;
+    min-height: auto !important;
+  }
+
+  .app-header h1 {
+    font-size: 1.2rem !important;
+  }
+
+  .app-header-user {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px !important;
+  }
+
+  .app-header-user span {
+    font-size: 0.85rem !important;
+    padding: 6px 12px !important;
+  }
+
+  .app-header-user button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 12px 15px !important;
+  }
+
+  .app-header h1 {
+    font-size: 1.1rem !important;
+  }
+
+  .app-header-user span {
+    font-size: 0.8rem !important;
+  }
 }
