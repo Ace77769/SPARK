@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './SubjectSelection.css';
+import LogoutButton from './LogoutButton';
 
 export default function SubjectSelection() {
   const location = useLocation();
@@ -37,6 +38,9 @@ export default function SubjectSelection() {
         <span></span>
       </div>
 
+      <div style={{ position: 'absolute', top: '20px', right: '20px' }}>
+        <LogoutButton />
+      </div>
       <div className="subject-selection-container">
         <h2 className="heading">
           📚 Learning Hub — {selectedClass ? `Class ${selectedClass}` : 'Select Class'}

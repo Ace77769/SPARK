@@ -1,6 +1,7 @@
 // client/src/teacher/ManageContent.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import TeacherNav from "./TeacherNav";
 import "./teacher.css";
 
 export default function ManageContent() {
@@ -52,9 +53,10 @@ export default function ManageContent() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-      padding: '40px 20px'
+      background: 'linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 50%, #FFDAB9 100%)',
+      padding: '20px'
     }}>
+      <TeacherNav />
       <div className="manage-container">
       <h2>📂 Manage Uploaded Content</h2>
 

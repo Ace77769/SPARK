@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ClassSelection.css';
+import LogoutButton from './LogoutButton';
 
 export default function ClassSelection() {
   const navigate = useNavigate();
@@ -21,8 +22,12 @@ export default function ClassSelection() {
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 50%, #FFDAB9 100%)',
-      padding: '40px 20px'
+      padding: '40px 20px',
+      position: 'relative'
     }}>
+      <div style={{ position: 'absolute', top: '20px', right: '20px' }}>
+        <LogoutButton />
+      </div>
       <h1 style={{
         textAlign: 'center',
         fontFamily: "'Comic Sans MS', Arial, sans-serif",

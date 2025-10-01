@@ -33,55 +33,53 @@ code {
 
 /* ============================================
    GLOBAL INPUT TEXT VISIBILITY FIX
-   Ensures all input/textarea/select text is visible on BRIGHT backgrounds
+   Ensures all input/textarea/select text is visible
    ============================================ */
 
-/* Force visible BLACK text on ALL inputs by default (for bright backgrounds) */
-input,
+/* Force visible white text on ALL inputs by default (for dark backgrounds) */
+input:not(.username-input):not(.password-input),
 textarea,
 select {
-  color: #2C3E50 !important;
+  color: #ffffff !important;
   font-weight: 600 !important;
-  -webkit-text-fill-color: #2C3E50 !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
-/* Placeholder styling - visible on bright backgrounds */
-input::placeholder,
+/* Placeholder styling - visible on dark backgrounds */
+input:not(.username-input):not(.password-input)::placeholder,
 textarea::placeholder {
-  color: #8B7355 !important;
-  opacity: 0.7 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  opacity: 1 !important;
 }
 
-input::-webkit-input-placeholder,
+input:not(.username-input):not(.password-input)::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: #8B7355 !important;
-  opacity: 0.7 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
 }
 
-input::-moz-placeholder,
+input:not(.username-input):not(.password-input)::-moz-placeholder,
 textarea::-moz-placeholder {
-  color: #8B7355 !important;
-  opacity: 0.7 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  opacity: 1 !important;
 }
 
-input:-ms-input-placeholder,
+input:not(.username-input):not(.password-input):-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-  color: #8B7355 !important;
-  opacity: 0.7 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
 }
 
-/* Login page inputs - same as global now */
+/* Special handling for light background inputs (Login page) */
 .username-input,
 .password-input {
-  color: #2C3E50 !important;
+  color: #000000 !important;
   font-weight: 600 !important;
-  -webkit-text-fill-color: #2C3E50 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
 .username-input::placeholder,
 .password-input::placeholder {
   color: #8B7355 !important;
-  opacity: 0.7 !important;
+  opacity: 1 !important;
 }
 
 .username-input::-webkit-input-placeholder,
@@ -92,7 +90,7 @@ textarea:-ms-input-placeholder {
 .username-input::-moz-placeholder,
 .password-input::-moz-placeholder {
   color: #8B7355 !important;
-  opacity: 0.7 !important;
+  opacity: 1 !important;
 }
 
 .username-input:-ms-input-placeholder,
@@ -102,23 +100,18 @@ textarea:-ms-input-placeholder {
 
 /* Ensure select options are visible */
 select option {
-  color: #2C3E50 !important;
+  color: #000000 !important;
   background: #ffffff !important;
 }
 
 /* File input text */
 input[type="file"] {
-  color: #2C3E50 !important;
+  color: #ffffff !important;
 }
 
 input[type="file"]::file-selector-button {
-  color: #2C3E50 !important;
-  background: #FFD700 !important;
-  border: 2px solid #FFA500 !important;
-  padding: 8px 16px !important;
-  border-radius: 10px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
+  color: #000000 !important;
+  background: #ffffff !important;
 }
 
 /* ============================================

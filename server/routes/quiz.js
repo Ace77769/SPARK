@@ -71,7 +71,6 @@ router.get('/', async (req, res) => {
       filter.isActive = true;
     }
 
-    console.log('Fetching quizzes with filter:', filter, 'includeInactive:', includeInactive);
 
     if (stdClass) filter.stdClass = stdClass;
     if (subject) filter.subject = subject;
@@ -81,7 +80,6 @@ router.get('/', async (req, res) => {
       .select('-questions.correctAnswer -questions.explanation') // Hide answers from students
       .sort({ createdAt: -1 });
 
-    console.log(`Found ${quizzes.length} quizzes. Active: ${quizzes.filter(q => q.isActive).length}, Inactive: ${quizzes.filter(q => !q.isActive).length}`);
 
     res.json({ success: true, quizzes });
   } catch (error) {

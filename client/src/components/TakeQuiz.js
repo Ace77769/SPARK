@@ -200,12 +200,6 @@ export default function TakeQuiz() {
         <div className="error-message">
           <h3>❌ Error</h3>
           <p>{error}</p>
-          <div style={{ marginTop: '20px', fontSize: '14px', color: '#9ca3af' }}>
-            <p><strong>Debug Info:</strong></p>
-            <p>Quiz ID: {quizId || 'Not provided'}</p>
-            <p>Selected Class: {selectedClass || 'Not provided'}</p>
-            <p>Subject: {subject || 'Not provided'}</p>
-          </div>
           <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
             <button onClick={() => navigate('/class')} className="back-btn">
               🏠 Go to Home

@@ -1,5 +1,6 @@
 // client/src/teacher/AddMaterial.js
 import React, { useState } from "react";
+import TeacherNav from "./TeacherNav";
 import "./AddMaterial.css";
 
 export default function AddMaterial() {
@@ -44,12 +45,10 @@ export default function AddMaterial() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-      padding: '40px 20px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
+      background: 'linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 50%, #FFDAB9 100%)',
+      padding: '20px'
     }}>
+      <TeacherNav />
       <div className="upload-container">
         <h2>📤 Add Material</h2>
         <form onSubmit={handleUpload} className="upload-form">

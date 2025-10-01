@@ -394,6 +394,33 @@
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4);
 }
+  background: #3b82f6;
+}
+
+.download-btn:hover {
+  background: #1e40af;
+  transform: translateY(-2px);
+}
+
+.delete-btn {
+  background: #ef4444;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {

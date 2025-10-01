@@ -163,7 +163,8 @@ export default function ManageQuizzes() {
     return (
       <div style={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)'
+        background: 'linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 50%, #FFDAB9 100%)',
+        padding: '20px'
       }}>
         <TeacherNav />
         <div className="manage-quizzes-container">
@@ -179,8 +180,8 @@ export default function ManageQuizzes() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-      paddingBottom: '40px'
+      background: 'linear-gradient(135deg, #FFF8DC 0%, #FFE4B5 50%, #FFDAB9 100%)',
+      padding: '20px'
     }}>
       <TeacherNav />
       <div className="manage-quizzes-container">

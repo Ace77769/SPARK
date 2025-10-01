@@ -1,0 +1,224 @@
+.manage-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 20px;
+  color: #2C3E50;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border: 5px solid #FFD700;
+}
+
+.manage-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #FF6347;
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Filter buttons */
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-buttons button {
+  padding: 10px 20px;
+  border: 3px solid #FFD700;
+  background: #fff;
+  color: #2C3E50;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-buttons button:hover {
+  border-color: #FFA500;
+  background: #FFF9E6;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.filter-buttons button.active {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  border-color: #FFA500;
+  color: white;
+  box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
+}
+
+.materials-list {
+  margin-top: 20px;
+}
+
+.material-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #FFF9E6;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  border: 3px solid #FFD700;
+  transition: all 0.3s ease;
+}
+
+.material-item:hover {
+  background: #FFFAEF;
+  border-color: #FFA500;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.video-item {
+  border-left: 5px solid #87CEEB;
+}
+
+.material-info {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.material-header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.category-badge,
+.video-type-badge {
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+}
+
+.category-badge {
+  background: #87CEEB;
+  color: #2C3E50;
+  border: 2px solid #4682B4;
+}
+
+.video-type-badge {
+  background: #90EE90;
+  color: #2C3E50;
+  border: 2px solid #228B22;
+}
+
+.material-title {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2C3E50;
+  line-height: 1.4;
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+}
+
+.material-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  color: #5A6C7D;
+  flex-wrap: wrap;
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+  font-weight: 600;
+}
+
+.description-preview {
+  font-style: italic;
+  max-width: 300px;
+}
+
+.video-thumbnail-small {
+  margin-top: 10px;
+}
+
+.thumbnail-preview {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 3px solid #FFD700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.view-btn,
+.download-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.view-btn {
+  background: #90EE90;
+  color: #2C3E50;
+  border: 2px solid #228B22;
+}
+
+.view-btn:hover {
+  background: #7FD87F;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(144, 238, 144, 0.4);
+}
+
+.download-btn {
+  background: #87CEEB;
+  color: #2C3E50;
+  border: 2px solid #4682B4;
+}
+
+.download-btn:hover {
+  background: #6DB6D8;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(135, 206, 235, 0.4);
+}
+
+.delete-btn {
+  background: #FF6347;
+  border: 2px solid #DC143C;
+  padding: 10px 18px;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.delete-btn:hover {
+  background: #FF4500;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4);
+}
