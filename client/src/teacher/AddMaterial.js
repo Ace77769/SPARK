@@ -1,15 +1,24 @@
 // client/src/teacher/AddMaterial.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TeacherNav from "./TeacherNav";
 import "./AddMaterial.css";
+import { getSubjectsForClass } from "../utils/subjectUtils";
 
 export default function AddMaterial() {
   const [title, setTitle] = useState("");
   const [stdClass, setStdClass] = useState("1");
-  const [subject, setSubject] = useState("Mathematics");
+  const [subjects, setSubjects] = useState(getSubjectsForClass("1"));
+  const [subject, setSubject] = useState(getSubjectsForClass("1")[0]);
   const [category, setCategory] = useState("Textbooks"); // ✅ NEW
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
+
+  // Update subjects when class changes
+  useEffect(() => {
+    const newSubjects = getSubjectsForClass(stdClass);
+    setSubjects(newSubjects);
+    setSubject(newSubjects[0]); // Set first subject as default
+  }, [stdClass]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -69,17 +78,7 @@ export default function AddMaterial() {
 
         <label>Choose Subject:</label>
         <select value={subject} onChange={(e) => setSubject(e.target.value)}>
-          {[
-            "Mathematics",
-            "Science",
-            "English",
-            "Social Studies",
-            "Hindi",
-            "Marathi",
-            "Computer",
-            "EVS",
-            "Sanskrit",
-          ].map((s) => (
+          {subjects.map((s) => (
             <option key={s} value={s}>{s}</option>
           ))}
         </select>

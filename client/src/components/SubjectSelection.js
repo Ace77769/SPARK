@@ -2,24 +2,14 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './SubjectSelection.css';
 import LogoutButton from './LogoutButton';
+import { getSubjectsForClass } from '../utils/subjectUtils';
 
 export default function SubjectSelection() {
   const location = useLocation();
   const navigate = useNavigate();
   const selectedClass = location.state?.selectedClass;
 
-  // Match teacher upload subjects exactly
-  const subjects = [
-    "Mathematics",
-    "Science",
-    "English",
-    "Social Studies",
-    "Hindi",
-    "Marathi",
-    "Computer",
-    "EVS",
-    "Sanskrit"
-  ];
+  const subjects = getSubjectsForClass(selectedClass);
 
   const subParts = ["Materials", "Videos", "Quiz"];
 

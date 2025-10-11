@@ -1,18 +1,27 @@
 // client/src/teacher/AddVideo.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TeacherNav from "./TeacherNav";
 import "./AddVideo.css";
+import { getSubjectsForClass } from "../utils/subjectUtils";
 
 export default function AddVideo() {
   const [title, setTitle] = useState("");
   const [stdClass, setStdClass] = useState("1");
-  const [subject, setSubject] = useState("Mathematics");
+  const [subjects, setSubjects] = useState(getSubjectsForClass("1"));
+  const [subject, setSubject] = useState(getSubjectsForClass("1")[0]);
   const [videoType, setVideoType] = useState("youtube");
   const [videoUrl, setVideoUrl] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Update subjects when class changes
+  useEffect(() => {
+    const newSubjects = getSubjectsForClass(stdClass);
+    setSubjects(newSubjects);
+    setSubject(newSubjects[0]); // Set first subject as default
+  }, [stdClass]);
 
   const extractYouTubeVideoId = (url) => {
     const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
@@ -130,17 +139,7 @@ export default function AddVideo() {
             <div className="form-group">
               <label>Subject *</label>
               <select value={subject} onChange={(e) => setSubject(e.target.value)}>
-                {[
-                  "Mathematics",
-                  "Science",
-                  "English",
-                  "Social Studies",
-                  "Hindi",
-                  "Marathi",
-                  "Computer",
-                  "EVS",
-                  "Sanskrit",
-                ].map((s) => (
+                {subjects.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>

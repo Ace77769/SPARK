@@ -1,13 +1,15 @@
 // client/src/teacher/CreateQuiz.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TeacherNav from "./TeacherNav";
 import "./CreateQuiz.css";
+import { getSubjectsForClass } from "../utils/subjectUtils";
 
 export default function CreateQuiz() {
+  const [subjects, setSubjects] = useState(getSubjectsForClass("1"));
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    subject: "Mathematics",
+    subject: getSubjectsForClass("1")[0],
     stdClass: "1",
     timeLimit: 30,
     allowRetake: false,
@@ -28,10 +30,12 @@ export default function CreateQuiz() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const subjects = [
-    "Mathematics", "Science", "English", "Social Studies", 
-    "Hindi", "Marathi", "Computer", "EVS", "Sanskrit"
-  ];
+  // Update subjects when class changes
+  useEffect(() => {
+    const newSubjects = getSubjectsForClass(formData.stdClass);
+    setSubjects(newSubjects);
+    setFormData(prev => ({ ...prev, subject: newSubjects[0] })); // Set first subject as default
+  }, [formData.stdClass]);
 
   const handleFormChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
