@@ -3,17 +3,19 @@ const mongoose = require('mongoose');
 
 const MaterialSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  filename: { type: String }, // for uploaded files (PDFs, videos)
+  filename: { type: String }, // DEPRECATED: for backward compatibility with old local uploads
+  fileUrl: { type: String }, // NEW: Cloudinary URL for uploaded files
+  cloudinaryId: { type: String }, // NEW: Cloudinary public_id for deletion
   originalName: { type: String }, // original uploaded name
   uploader: { type: String }, // username or teacher ID
   stdClass: { type: String, required: true },
-  subject: { type: String, required: true }, 
+  subject: { type: String, required: true },
   category: {
     type: String,
-    enum: ["Textbooks", "Question Papers", "Videos", "Other"], // ✅ Added Videos
+    enum: ["Textbooks", "Question Papers", "Videos", "Other"],
     default: "Textbooks"
   },
-  // ✅ NEW: Video-specific fields
+  // Video-specific fields
   videoType: {
     type: String,
     enum: ["upload", "youtube", "other"],
@@ -27,7 +29,7 @@ const MaterialSchema = new mongoose.Schema({
   description: { type: String }, // Video description
   duration: { type: String }, // Video duration (optional)
   thumbnail: { type: String }, // Thumbnail image path (optional)
-  
+
   mimetype: { type: String },
   size: { type: Number },
 }, { timestamps: true });

@@ -126,9 +126,9 @@ export default function MaterialsPage() {
               </a>
             )}
             {/* Only show download for uploaded videos that have files */}
-            {file.videoType === "upload" && file.filename && (
+            {file.videoType === "upload" && (file.fileUrl || file.filename) && (
               <a
-                href={`http://localhost:5000/uploads/${file.filename}`}
+                href={file.fileUrl || `http://localhost:5000/uploads/${file.filename}`}
                 download={file.originalName}
                 className="download-btn"
               >
@@ -140,6 +140,12 @@ export default function MaterialsPage() {
       );
     } else {
       // Original PDF/document rendering
+      // Use viewableUrl for viewing (proxy route that serves inline), downloadUrl for downloading
+      const viewLink = file.viewableUrl
+        ? `http://localhost:5000${file.viewableUrl}`
+        : (file.fileUrl || `http://localhost:5000/uploads/${file.filename}`);
+      const downloadLink = file.downloadUrl || file.fileUrl || `http://localhost:5000/uploads/${file.filename}`;
+
       return (
         <div key={file._id} className="file-card">
           <div className="file-icon">📄</div>
@@ -147,7 +153,7 @@ export default function MaterialsPage() {
 
           <div className="file-actions">
             <a
-              href={`http://localhost:5000/uploads/${file.filename}`}
+              href={viewLink}
               target="_blank"
               rel="noreferrer"
               className="view-btn"
@@ -155,7 +161,7 @@ export default function MaterialsPage() {
               👁 View
             </a>
             <a
-              href={`http://localhost:5000/uploads/${file.filename}`}
+              href={downloadLink}
               download={file.originalName}
               className="download-btn"
             >

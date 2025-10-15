@@ -179,7 +179,7 @@ export default function ManageContent() {
                     </a>
                   ) : m.videoType === "upload" ? (
                     <a
-                      href={`http://localhost:5000/uploads/${m.filename}`}
+                      href={m.fileUrl || `http://localhost:5000/uploads/${m.filename}`}
                       target="_blank"
                       rel="noreferrer"
                       className="view-btn"
@@ -200,7 +200,7 @@ export default function ManageContent() {
                   )
                 ) : (
                   <a
-                    href={`http://localhost:5000/uploads/${m.filename}`}
+                    href={m.viewableUrl ? `http://localhost:5000${m.viewableUrl}` : (m.fileUrl || `http://localhost:5000/uploads/${m.filename}`)}
                     target="_blank"
                     rel="noreferrer"
                     className="view-btn"
@@ -211,9 +211,9 @@ export default function ManageContent() {
                 )}
 
                 {/* Download (only for uploaded files) */}
-                {m.filename && (
+                {(m.fileUrl || m.filename) && (
                   <a
-                    href={`http://localhost:5000/uploads/${m.filename}`}
+                    href={m.downloadUrl || m.fileUrl || `http://localhost:5000/uploads/${m.filename}`}
                     download={m.originalName}
                     className="download-btn"
                     title="Download"
