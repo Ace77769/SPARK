@@ -1,8 +1,62 @@
-// server/routes/quiz.js
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 const Quiz = require('../models/Quiz');
 const QuizAttempt = require('../models/QuizAttempt');
+const aiService = require('../services/aiService'); // 🧠 AI helper
+
+// File upload (for textbook PDFs)
+const upload = multer({ storage: multer.memoryStorage() });
+
+
+// ------------------ 🧠 AI QUIZ GENERATION ROUTE ------------------
+router.post('/generate', upload.single('textbook'), async (req, res) => {
+  try {
+    const { subject, stdClass, numberOfQuestions, scheduledTime } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No textbook PDF uploaded' });
+    }
+
+    // Step 1️⃣ Extract text and generate quiz questions using AI
+    const tempPdfPath = await aiService.extractTextFromPDF(req.file.buffer);
+    const questions = await aiService.generateQuiz(subject, tempPdfPath, parseInt(numberOfQuestions || 5));
+
+    // Step 2️⃣ Prepare quiz object
+    const quizData = {
+      title: `AI Quiz - ${subject} - Class ${stdClass}`,
+      subject,
+      stdClass,
+      creator: req.body.creator || 'teacher',
+      questions,
+      timeLimit: 30,
+      allowRetake: false,
+      showCorrectAnswers: true,
+      passingScore: 60,
+      scheduledTime: scheduledTime ? new Date(scheduledTime) : new Date(),
+      isActive: false
+    };
+
+    // Step 3️⃣ Save to MongoDB
+    const newQuiz = new Quiz(quizData);
+    await newQuiz.save();
+
+    // Step 4️⃣ Respond with saved quiz
+    res.json({
+      success: true,
+      message: `AI generated and saved ${questions.length} questions successfully.`,
+      quiz: newQuiz
+    });
+
+  } catch (error) {
+    console.error("⚠️ AI quiz generation failed:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to generate quiz",
+      error: error.message
+    });
+  }
+});
 
 // Create a new quiz (Teachers only)
 router.post('/create', async (req, res) => {
@@ -48,7 +102,8 @@ router.post('/create', async (req, res) => {
       timeLimit: timeLimit || 30,
       allowRetake: allowRetake || false,
       showCorrectAnswers: showCorrectAnswers !== false,
-      passingScore: passingScore || 60
+      passingScore: passingScore || 60,
+      isActive: true
     });
 
     await quiz.save();
@@ -213,7 +268,9 @@ router.post('/:id/submit', async (req, res) => {
     res.status(500).json({ success: false, message: 'Failed to submit quiz', error: error.message });
   }
 });
-
+router.get('/test', (req, res) => {
+  res.json({ success: true, message: 'Quiz routes are working!' });
+});
 // Get quiz attempts for a student
 router.get('/attempts/:studentUsername', async (req, res) => {
   try {

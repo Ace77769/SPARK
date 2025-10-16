@@ -14,6 +14,26 @@ app.use(express.json());
 // ✅ Serve uploaded PDFs and videos (static)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// ✅ Root route (for quick server check)
+app.get("/", (req, res) => {
+  res.send(" Spark AI Server is running successfully!");
+});
+
+// ✅ Health check route (optional, for debugging MongoDB + AI)
+app.get("/api/status", async (req, res) => {
+  try {
+    const dbStatus = mongoose.connection.readyState === 1 ? "connected" : "disconnected";
+    res.json({
+      success: true,
+      server: "running",
+      mongodb: dbStatus,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Routes
 const materialsRoutes = require("./routes/materials");
 const authRoutes = require("./routes/auth");
@@ -29,8 +49,8 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log(" Connected to MongoDB"))
+  .catch((err) => console.error(" MongoDB connection error:", err));
 
 // Server listen
 const PORT = process.env.PORT || 5000;
