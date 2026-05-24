@@ -74,11 +74,7 @@ TEXTBOOK CONTENT:
 Return ONLY valid JSON with DOUBLE QUOTES and exactly {num_questions} questions, like:
 {{
   "questions": [
-    {{
-      "question": "What is 2 + 2?",
-      "options": ["3", "4", "5", "6"],
-      "correctAnswer": 1
-    }}
+    {{"question": "What is 2 + 2?", "options": ["3", "4", "5", "6"], "correctAnswer": 1}}
   ]
 }}
 """
@@ -88,7 +84,7 @@ Return ONLY valid JSON with DOUBLE QUOTES and exactly {num_questions} questions,
                 "model": "gemma:2b",
                 "prompt": prompt,
                 "stream": False,
-                "options": {"temperature": 0.3, "top_p": 0.9, "num_predict": 700}
+                "options": {"temperature": 0.2, "top_p": 0.9, "num_predict": 700}
             }
 
             self.log("🚀 Sending request to Ollama...")
@@ -113,21 +109,29 @@ Return ONLY valid JSON with DOUBLE QUOTES and exactly {num_questions} questions,
             return self.create_fallback_quiz(subject, num_questions)
 
     def validate_quiz_data(self, quiz_data, expected_questions):
+        """
+        Validate AI-generated quiz data and ensure correctAnswer is an index.
+        """
         if not isinstance(quiz_data, dict):
-            self.log("❌ Quiz data not in dictionary format.")
+            self.log("❌ Quiz data is not a dictionary.")
             return self.create_fallback_quiz("general", expected_questions)
 
-        questions = quiz_data.get('questions', [])
+        questions = quiz_data.get("questions", [])
         if not isinstance(questions, list):
-            self.log("❌ Questions not in list format.")
+            self.log("❌ Questions are not a list.")
             return self.create_fallback_quiz("general", expected_questions)
 
         valid_questions = []
         for q in questions:
-            if isinstance(q, dict) and 'question' in q and 'options' in q and 'correctAnswer' in q:
-                if isinstance(q['correctAnswer'], str) and q['correctAnswer'].isdigit():
-                    q['correctAnswer'] = int(q['correctAnswer'])
-                if isinstance(q['options'], list) and len(q['options']) == 4:
+            if isinstance(q, dict) and "question" in q and "options" in q and "correctAnswer" in q:
+                # Convert correctAnswer from string to index if needed
+                if isinstance(q["correctAnswer"], str):
+                    try:
+                        q["correctAnswer"] = q["options"].index(q["correctAnswer"])
+                    except ValueError:
+                        q["correctAnswer"] = 0  # fallback to first option
+                # Ensure options is exactly 4 items
+                if isinstance(q["options"], list) and len(q["options"]) == 4:
                     valid_questions.append(q)
 
         if not valid_questions:
