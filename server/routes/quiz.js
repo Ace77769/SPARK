@@ -51,7 +51,7 @@ router.post('/generate', upload.single('textbook'), async (req, res) => {
       aiGenerated,
       message: aiGenerated
         ? `AI generated and saved ${questions.length} questions successfully.`
-        : `Saved ${questions.length} placeholder questions — AI generation failed. Check GEMINI_API_KEY and GEMINI_MODEL.`,
+        : `Saved ${questions.length} placeholder questions — AI generation failed. Check GROQ_API_KEY and GROQ_MODEL.`,
       quiz: newQuiz
     });
 

@@ -83,7 +83,7 @@ export default function CreateQuiz() {
         title: result.quiz.title || `AI Quiz - ${formData.subject} - Class ${formData.stdClass}`
       }));
       if (result.aiGenerated === false) {
-        setMessage("⚠️ AI generation failed — generic placeholder questions were used. Check your GEMINI_API_KEY and GEMINI_MODEL in ai-service/.env, then restart the AI service.");
+        setMessage("⚠️ AI generation failed — generic placeholder questions were used. Check your GROQ_API_KEY and GROQ_MODEL in ai-service/.env, then restart the AI service.");
       } else {
         setMessage("✅ AI quiz generated successfully! Review and customize the questions below.");
       }

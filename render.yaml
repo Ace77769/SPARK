@@ -12,10 +12,10 @@ services:
     envVars:
       - key: PORT
         value: 8000
-      - key: GEMINI_API_KEY
+      - key: GROQ_API_KEY
         sync: false # Set in Render Dashboard
-      - key: GEMINI_MODEL
-        value: gemini-2.0-flash
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-20b
 
   # -------------------------------------------------------------------------
   # 2. Express Backend
