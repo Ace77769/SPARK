@@ -7,6 +7,7 @@ Exposes:
 """
 
 import os
+from groq import Groq
 import sys
 import json
 import re
@@ -15,7 +16,6 @@ import tempfile
 import logging
 
 import pdfplumber
-import google.generativeai as genai
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 
@@ -34,20 +34,23 @@ log = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # ---------------------------------------------------------------------------
-# Gemini client setup
+# Groq client setup
 # ---------------------------------------------------------------------------
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GEMINI_MODEL   = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_MODEL   = os.environ.get("GROQ_MODEL", "gemma2-2b-it")
+MAX_CHARS = 6000  # Keep token usage low; sufficient for good quiz generation
 
-if not GEMINI_API_KEY:
-    log.warning("GEMINI_API_KEY is not set — quiz generation will fail.")
+if not GROQ_API_KEY:
+    log.warning("GROQ_API_KEY is not set — quiz generation will fail.")
 
-genai.configure(api_key=GEMINI_API_KEY)
+client = None
+if GROQ_API_KEY:
+    client = Groq(api_key=GROQ_API_KEY)
 
 # ---------------------------------------------------------------------------
 # PDF text extraction
 # ---------------------------------------------------------------------------
-MAX_CHARS = 6000  # Keep token usage low; sufficient for good quiz generation
+
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
     """Extract and truncate text from a PDF byte buffer using pdfplumber."""
@@ -142,7 +145,7 @@ def validate_questions(questions: list, expected: int) -> list:
 
 
 def fallback_quiz(subject: str, num_questions: int) -> dict:
-    """Return a safe fallback when Gemini fails."""
+    """Return a safe fallback when Groq fails."""
     log.warning(f"Using fallback quiz for subject: {subject}")
     return {
         "questions": [
@@ -163,25 +166,30 @@ def fallback_quiz(subject: str, num_questions: int) -> dict:
 
 
 def generate_quiz(subject: str, content: str, num_questions: int) -> dict:
-    """Call Gemini API and return validated quiz dict."""
+    """Call Groq API and return validated quiz dict."""
     prompt = build_prompt(subject, content, num_questions)
-    log.info(f"Sending request to Gemini ({GEMINI_MODEL}) for {num_questions} questions on '{subject}'")
+    log.info(f"Sending request to Groq ({GROQ_MODEL}) for {num_questions} questions on '{subject}'")
+
+    if not client:
+        log.error("Groq client is not initialized (missing GROQ_API_KEY)")
+        return fallback_quiz(subject, num_questions)
 
     try:
-        model = genai.GenerativeModel(
-            model_name=GEMINI_MODEL,
-            generation_config=genai.GenerationConfig(
-                temperature=0.3,
-                top_p=0.9,
-                max_output_tokens=2048,
-            ),
+        response = client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.3,
         )
-        response = model.generate_content(prompt, request_options={"timeout": 30})
-        raw_text = response.text
-        log.info(f"Received {len(raw_text)} chars from Gemini")
+        raw_text = response.choices[0].message.content
+        log.info(f"Received {len(raw_text)} chars from Groq")
 
     except Exception as exc:
-        log.error(f"Gemini API call failed: {exc}")
+        log.error(f"Groq API call failed: {exc}")
         return fallback_quiz(subject, num_questions)
 
     cleaned = clean_json_response(raw_text)
@@ -206,7 +214,7 @@ def generate_quiz(subject: str, content: str, num_questions: int) -> dict:
 @app.route("/health", methods=["GET"])
 def health():
     """Health-check endpoint for Docker and Render."""
-    return jsonify({"status": "ok", "model": GEMINI_MODEL}), 200
+    return jsonify({"status": "ok", "model": GROQ_MODEL}), 200
 
 
 @app.route("/generate", methods=["POST"])
