@@ -19,7 +19,7 @@ export default function MaterialsPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const url = `http://localhost:5000/api/materials?stdClass=${selectedClass}&subject=${subject}&category=${category}`;
+        const url = `/api/materials?stdClass=${selectedClass}&subject=${subject}&category=${category}`;
         console.log("Fetching:", url);
 
         const res = await fetch(url);
@@ -128,7 +128,7 @@ export default function MaterialsPage() {
             {/* Only show download for uploaded videos that have files */}
             {file.videoType === "upload" && (file.fileUrl || file.filename) && (
               <a
-                href={file.fileUrl || `http://localhost:5000/uploads/${file.filename}`}
+                href={file.fileUrl || `/uploads/${file.filename}`}
                 download={file.originalName}
                 className="download-btn"
               >
@@ -140,11 +140,10 @@ export default function MaterialsPage() {
       );
     } else {
       // Original PDF/document rendering
-      // Use viewableUrl for viewing (proxy route that serves inline), downloadUrl for downloading
-      const viewLink = file.viewableUrl
-        ? `http://localhost:5000${file.viewableUrl}`
-        : (file.fileUrl || `http://localhost:5000/uploads/${file.filename}`);
-      const downloadLink = file.downloadUrl || file.fileUrl || `http://localhost:5000/uploads/${file.filename}`;
+      // Use server-provided proxy URL for inline PDF viewing
+      const viewLink = file.viewableUrl;
+      console.log("VIEW LINK =", viewLink);
+      const downloadLink = file.downloadUrl || file.fileUrl || `/uploads/${file.filename}`;
 
       return (
         <div key={file._id} className="file-card">
@@ -152,14 +151,20 @@ export default function MaterialsPage() {
           <p className="file-title">{file.title || file.originalName}</p>
 
           <div className="file-actions">
-            <a
-              href={viewLink}
-              target="_blank"
-              rel="noreferrer"
-              className="view-btn"
-            >
-              👁 View
-            </a>
+            {viewLink ? (
+              <a
+                href={viewLink}
+                target="_blank"
+                rel="noreferrer"
+                className="view-btn"
+              >
+                👁 View
+              </a>
+            ) : (
+              <span className="view-btn view-btn-disabled" title="PDF preview unavailable">
+                👁 View unavailable
+              </span>
+            )}
             <a
               href={downloadLink}
               download={file.originalName}

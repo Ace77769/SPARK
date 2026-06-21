@@ -75,17 +75,12 @@ function extractYouTubeVideoId(url) {
   return match ? match[1] : null;
 }
 
-// Helper function to convert Cloudinary URL to inline (viewable) URL for PDFs
-// Instead of modifying Cloudinary URL, we'll use our own proxy route
-function getViewableUrl(cloudinaryUrl, materialId) {
-  if (!cloudinaryUrl) return cloudinaryUrl;
-
-  // For PDFs, return our proxy URL that serves inline
-  if (cloudinaryUrl.includes('.pdf') && materialId) {
-    return `/api/materials/view/${materialId}`;
+// Helper function to build proxy URL for inline PDF viewing
+function getViewableUrl(materialId, category, baseUrl) {
+  if (!materialId || category === "Videos") {
+    return null;
   }
-
-  return cloudinaryUrl;
+  return `${baseUrl}/api/materials/view/${materialId}`;
 }
 
 // Helper function to generate signed Cloudinary URL for authenticated access
@@ -278,6 +273,7 @@ router.get("/", async (req, res) => {
     if (req.query.category) query.category = req.query.category;
 
     const materials = await Material.find(query).sort({ createdAt: -1 });
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
 
     // Add viewable and download URLs for PDFs
     const materialsWithUrls = materials.map(material => {
@@ -289,7 +285,11 @@ router.get("/", async (req, res) => {
         const resourceType = isVideo ? "video" : "raw";
 
         // Use proxy route for viewing (handles inline display)
-        materialObj.viewableUrl = getViewableUrl(materialObj.fileUrl, materialObj._id);
+        materialObj.viewableUrl = getViewableUrl(
+          materialObj._id,
+          materialObj.category,
+          baseUrl
+        );
 
         // Generate signed URL for downloads
         materialObj.downloadUrl = getDownloadUrl(materialObj.cloudinaryId, materialObj.originalName, resourceType);

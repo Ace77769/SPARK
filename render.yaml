@@ -1,0 +1,61 @@
+# Render Blueprint for SPARK Production Deployment
+services:
+  # -------------------------------------------------------------------------
+  # 1. AI Microservice (Python Flask + Gemini API)
+  # -------------------------------------------------------------------------
+  - type: web
+    name: spark-ai-service
+    env: docker
+    dockerContext: ai-service
+    dockerfilePath: Dockerfile
+    plan: free # Can upgrade to standard if needed
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: GEMINI_API_KEY
+        sync: false # Set in Render Dashboard
+      - key: GEMINI_MODEL
+        value: gemini-2.0-flash
+
+  # -------------------------------------------------------------------------
+  # 2. Express Backend
+  # -------------------------------------------------------------------------
+  - type: web
+    name: spark-backend
+    env: docker
+    dockerContext: server
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # Set in Render Dashboard (MongoDB Atlas cluster connection string)
+      - key: JWT_SECRET
+        generateValue: true # Generates a random secure secret automatically
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false # Set in Render Dashboard
+      - key: CLOUDINARY_API_KEY
+        sync: false # Set in Render Dashboard
+      - key: CLOUDINARY_API_SECRET
+        sync: false # Set in Render Dashboard
+      - key: AI_SERVICE_URL
+        fromService:
+          name: spark-ai-service
+          type: web
+          property: host # Automatically resolved host URL of the AI Service web service
+      - key: FRONTEND_URL
+        value: "*" # Set to "*" initially or replace with frontend domain after creation
+
+  # -------------------------------------------------------------------------
+  # 3. Nginx-powered React Frontend
+  # -------------------------------------------------------------------------
+  - type: web
+    name: spark-frontend
+    env: docker
+    dockerContext: client
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: PORT
+        value: 80

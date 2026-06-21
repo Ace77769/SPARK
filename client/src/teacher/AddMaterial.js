@@ -32,7 +32,7 @@ export default function AddMaterial() {
     fd.append("file", file);
 
     try {
-      const res = await fetch("http://localhost:5000/api/materials/upload", {
+      const res = await fetch("/api/materials/upload", {
         method: "POST",
         body: fd,
       });

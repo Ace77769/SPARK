@@ -1,2 +1,14 @@
 .env
 server/.env
+ai-service/.env
+
+# Python files
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# IDE files
+.claude/
+.idea/
+.vscode/

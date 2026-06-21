@@ -45,7 +45,7 @@ export default function VideoPlayer({ video, onClose }) {
           preload="metadata"
         >
           <source 
-            src={`http://localhost:5000/uploads/${video.filename}`} 
+            src={`/uploads/${video.filename}`} 
             type={video.mimetype || "video/mp4"} 
           />
           Your browser does not support the video tag.

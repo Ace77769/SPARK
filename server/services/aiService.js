@@ -1,46 +1,51 @@
 // server/services/aiService.js
-const { exec } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+const axios = require('axios');
 
 class AIService {
+  /**
+   * PDF text extraction and quiz generation is now delegated entirely to the AI service container
+   * via HTTP API. We simply forward the PDF buffer as a base64-encoded string.
+   */
   async extractTextFromPDF(pdfBuffer) {
-    const tempDir = path.join(__dirname, '..', 'temp');
-    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
-    const tempPdfPath = path.join(tempDir, `temp_${Date.now()}.pdf`);
-    fs.writeFileSync(tempPdfPath, pdfBuffer);
-    console.log(`📄 Saved temp PDF: ${tempPdfPath}`);
-    return tempPdfPath;
+    // Return base64 string directly so we can send it in the HTTP request payload
+    return pdfBuffer.toString('base64');
   }
 
-  async generateQuiz(subject, pdfPath, numberOfQuestions = 5) {
-    return new Promise((resolve, reject) => {
-      const pythonScript = path.join(__dirname, '..', 'python_ai_service.py');
-      const cmd = `python "${pythonScript}" "${subject}" "${pdfPath}" ${numberOfQuestions}`;
+  async generateQuiz(subject, pdfBase64, numberOfQuestions = 5) {
+    const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:8000';
+    console.log(`🤖 Requesting quiz generation from AI Service: ${aiServiceUrl}/generate`);
 
-      console.log('🐍 Running python:', cmd);
-      exec(cmd, { maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
-        // delete temp pdf
-        try { if (fs.existsSync(pdfPath)) fs.unlinkSync(pdfPath); } catch (e) {}
-
-        if (error) {
-          console.error('❌ Python service error:', error);
-          console.error('stderr:', stderr);
-          return reject(new Error(`AI service failed: ${error.message}`));
+    try {
+      const response = await axios.post(
+        `${aiServiceUrl}/generate`,
+        {
+          subject: subject,
+          pdf_base64: pdfBase64,
+          num_questions: numberOfQuestions
+        },
+        {
+          timeout: 90000 // 90-second timeout for AI pipeline
         }
+      );
 
-        // stdout should be JSON
-        try {
-          console.log('📤 Python stdout preview:', stdout.slice(0, 1000));
-          const result = JSON.parse(stdout);
-          if (result.error) return reject(new Error(result.error));
-          resolve(result.questions || []);
-        } catch (parseErr) {
-          console.error('❌ Failed to parse Python output, stdout: ', stdout);
-          return reject(new Error('Invalid JSON from AI service'));
-        }
-      });
-    });
+      if (response.data && response.data.questions) {
+        const aiGenerated = response.data.aiGenerated !== false;
+        console.log(`✅ AI service returned ${response.data.questions.length} questions (aiGenerated=${aiGenerated})`);
+        return {
+          questions: response.data.questions,
+          aiGenerated,
+        };
+      } else {
+        console.warn('⚠️ AI Service did not return standard questions format. Fallback empty array.');
+        return { questions: [], aiGenerated: false };
+      }
+    } catch (error) {
+      console.error('❌ AI microservice communication failure:', error.message);
+      if (error.response) {
+        console.error('Response details:', error.response.status, error.response.data);
+      }
+      throw new Error(`AI Quiz Generation failed: ${error.message}`);
+    }
   }
 }
 

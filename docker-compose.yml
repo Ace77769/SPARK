@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------------------
+  # AI Microservice (Flask + Gemini API)
+  # -------------------------------------------------------------------------
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: spark-ai-service
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./ai-service/.env
+    restart: always
+
+  # -------------------------------------------------------------------------
+  # Express Backend API
+  # -------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: spark-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+    environment:
+      # Inject Docker DNS name instead of localhost for container-to-container calls
+      - AI_SERVICE_URL=http://ai-service:8000
+    depends_on:
+      - ai-service
+    restart: always
+
+  # -------------------------------------------------------------------------
+  # Nginx-powered React Frontend
+  # -------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: spark-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: always

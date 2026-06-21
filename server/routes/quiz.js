@@ -18,9 +18,13 @@ router.post('/generate', upload.single('textbook'), async (req, res) => {
       return res.status(400).json({ success: false, message: 'No textbook PDF uploaded' });
     }
 
-    // Step 1️⃣ Extract text and generate quiz questions using AI
-    const tempPdfPath = await aiService.extractTextFromPDF(req.file.buffer);
-    const questions = await aiService.generateQuiz(subject, tempPdfPath, parseInt(numberOfQuestions || 5));
+    // Step 1️⃣ Extract base64 and generate quiz questions using AI
+    const pdfBase64 = await aiService.extractTextFromPDF(req.file.buffer);
+    const { questions, aiGenerated } = await aiService.generateQuiz(
+      subject,
+      pdfBase64,
+      parseInt(numberOfQuestions || 5)
+    );
 
     // Step 2️⃣ Prepare quiz object
     const quizData = {
@@ -44,7 +48,10 @@ router.post('/generate', upload.single('textbook'), async (req, res) => {
     // Step 4️⃣ Respond with saved quiz
     res.json({
       success: true,
-      message: `AI generated and saved ${questions.length} questions successfully.`,
+      aiGenerated,
+      message: aiGenerated
+        ? `AI generated and saved ${questions.length} questions successfully.`
+        : `Saved ${questions.length} placeholder questions — AI generation failed. Check GEMINI_API_KEY and GEMINI_MODEL.`,
       quiz: newQuiz
     });
 

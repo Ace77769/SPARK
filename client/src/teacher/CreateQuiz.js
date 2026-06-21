@@ -58,7 +58,7 @@ export default function CreateQuiz() {
 
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch('http://localhost:5000/api/quiz/generate', { // ✅ correct route
+    const response = await fetch('/api/quiz/generate', { // ✅ correct route
       method: 'POST',
       headers: { 
         'Authorization': `Bearer ${token}` // ✅ only Authorization header
@@ -82,7 +82,11 @@ export default function CreateQuiz() {
         ...prev,
         title: result.quiz.title || `AI Quiz - ${formData.subject} - Class ${formData.stdClass}`
       }));
-      setMessage("✅ AI quiz generated successfully! Review and customize the questions below.");
+      if (result.aiGenerated === false) {
+        setMessage("⚠️ AI generation failed — generic placeholder questions were used. Check your GEMINI_API_KEY and GEMINI_MODEL in ai-service/.env, then restart the AI service.");
+      } else {
+        setMessage("✅ AI quiz generated successfully! Review and customize the questions below.");
+      }
       setActiveTab("manual");
     } else {
       setMessage(`❌ ${result.error || "Failed to generate AI quiz"}`);
@@ -181,7 +185,7 @@ export default function CreateQuiz() {
     
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch('http://localhost:5000/api/quiz/create', {
+      const response = await fetch('/api/quiz/create', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

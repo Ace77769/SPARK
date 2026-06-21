@@ -10,7 +10,7 @@ export default function ManageContent() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/materials")
+      .get("/api/materials")
       .then((res) => setMaterials(res.data))
       .catch((err) => console.error(err));
   }, []);
@@ -19,7 +19,7 @@ export default function ManageContent() {
     if (!window.confirm("Are you sure you want to delete this content?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/materials/${id}`);
+      await axios.delete(`/api/materials/${id}`);
       setMaterials((prev) => prev.filter((m) => m._id !== id));
     } catch (err) {
       console.error(err);
@@ -179,7 +179,7 @@ export default function ManageContent() {
                     </a>
                   ) : m.videoType === "upload" ? (
                     <a
-                      href={m.fileUrl || `http://localhost:5000/uploads/${m.filename}`}
+                      href={m.fileUrl || `/uploads/${m.filename}`}
                       target="_blank"
                       rel="noreferrer"
                       className="view-btn"
@@ -199,21 +199,27 @@ export default function ManageContent() {
                     </a>
                   )
                 ) : (
-                  <a
-                    href={m.viewableUrl ? `http://localhost:5000${m.viewableUrl}` : (m.fileUrl || `http://localhost:5000/uploads/${m.filename}`)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="view-btn"
-                    title="View Document"
-                  >
-                    👁 View
-                  </a>
+                  m.viewableUrl ? (
+                    <a
+                      href={m.viewableUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="view-btn"
+                      title="View Document"
+                    >
+                      👁 View
+                    </a>
+                  ) : (
+                    <span className="view-btn view-btn-disabled" title="PDF preview unavailable">
+                      👁 View unavailable
+                    </span>
+                  )
                 )}
 
                 {/* Download (only for uploaded files) */}
                 {(m.fileUrl || m.filename) && (
                   <a
-                    href={m.downloadUrl || m.fileUrl || `http://localhost:5000/uploads/${m.filename}`}
+                    href={m.downloadUrl || m.fileUrl || `/uploads/${m.filename}`}
                     download={m.originalName}
                     className="download-btn"
                     title="Download"
