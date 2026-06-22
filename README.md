@@ -1,105 +1,316 @@
 # ⭐ SPARK Learning Platform
 
-SPARK is a modern, gamified learning platform for school students and teachers. 
+**SPARK** is a full-stack AI-powered gamified learning platform designed for school students and teachers, enabling interactive learning, automated quiz generation, and seamless content delivery through a scalable microservices architecture.
+
+---
 
 ## 🚀 Key Features
-- **AI Quiz Generation**: Teachers upload textbook PDFs to automatically generate validated multiple-choice quizzes using Google's **Gemini 1.5 Flash API**.
-- **Interactive Quizzes**: Students can take quizzes, get instant feedback, view correct answers, and review their history dashboard.
-- **Rich Study Materials**: Teachers can upload PDFs (Textbooks/Question Papers) and embed or upload Video lectures (stored on Cloudinary).
-- **Gamified Visuals**: Rich, colorful, interactive theme with beautiful hover elements and micro-animations.
+
+### 📚 AI Quiz Generation
+
+Teachers can upload textbook PDFs, and the platform automatically extracts content and generates **validated multiple-choice quizzes** using **Groq Cloud LLM API** with high-speed inference.
+
+### 🎯 Interactive Student Assessments
+
+Students can:
+
+* Attempt quizzes in real time
+* Get instant feedback after submission
+* View correct answers and explanations
+* Track quiz history and performance dashboard
+
+### 🎥 Rich Learning Resources
+
+Teachers can upload:
+
+* PDF Study Materials (Textbooks / Question Papers)
+* Video Lectures (stored securely on Cloudinary CDN)
+
+### 🎨 Gamified Learning Experience
+
+Modern interactive UI with:
+
+* Rich colorful dashboard
+* Hover effects and smooth micro-animations
+* Gamified student engagement design
 
 ---
 
-## 🏗️ Architecture Design
-SPARK is structured as a robust 3-tier containerized architecture:
+## 🏗️ System Architecture
 
+SPARK follows a **production-oriented 3-tier microservices architecture**.
+
+```text
+[ React Frontend ] (Port 3000)
+        │
+        ▼
+[ Node.js + Express Backend ] (Port 5000)
+        │
+        ├──► MongoDB Atlas Cluster (Cloud Database)
+        ├──► Cloudinary Storage API (Media Storage)
+        │
+        ▼
+[ Python Flask AI Service ] (Port 8000)
+        │
+        ▼
+[ Groq Cloud LLM API ]
 ```
-[ React SPA ] (Port 3000)
-     │
-     ▼ (Proxied via Nginx / Webpack)
-[ Node/Express Backend ] (Port 5000)
-     │
-     ├───► [ MongoDB Atlas Cluster ] (External cloud database)
-     ├───► [ Cloudinary Storage API ] (External cloud file storage)
-     │
-     ▼ (Base64 JSON HTTP Request)
-[ Python Flask AI Service ] (Port 8000) ───► [ Google Gemini LLM API ] (External cloud LLM)
+
+Architecture Flow:
+
+```text
+Frontend → Express Backend → Python AI Service → Groq API
+                              │
+                              ▼
+                      Quiz Generation Engine
 ```
 
 ---
 
-## 🛠️ Local Development (Standard Mode)
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React.js
+* React Router DOM
+* Tailwind CSS
+* Lucide React
+
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB Atlas
+* Mongoose ODM
+* JWT Authentication
+
+### AI Microservice
+
+* Python Flask
+* pdfplumber (PDF text extraction)
+* Groq API Integration
+* JSON-based Quiz Generation Pipeline
+
+### Cloud Services
+
+* MongoDB Atlas
+* Cloudinary CDN
+* Docker Containers
+* Render Deployment
+
+---
+
+## ⚡ AI Quiz Generation Pipeline
+
+The AI pipeline works as follows:
+
+```text
+Teacher Uploads PDF
+        ↓
+PDF Text Extraction using pdfplumber
+        ↓
+Text Preprocessing & Chunking
+        ↓
+Send Processed Text to Groq LLM API
+        ↓
+Generate Structured MCQ Quiz (JSON)
+        ↓
+Validate Response Format
+        ↓
+Send Quiz to Student Dashboard
+```
+
+This architecture reduces token consumption and enables scalable cloud-based AI generation.
+
+---
+
+## 🖥️ Local Development Setup
 
 ### Prerequisites
-1. **Google Gemini API Key**: Get a free key instantly from [Google AI Studio](https://aistudio.google.com/app/apikey).
-2. **MongoDB Atlas Account**: Set up a free sandbox database cluster.
-3. **Cloudinary Account**: Sign up on [Cloudinary](https://cloudinary.com/) for media storage.
 
-### Local Setup
-1. Clone the project and configure environment files:
-   - Create `ai-service/.env` (see `ai-service/.env.example`) and add your `GEMINI_API_KEY`.
-   - Create `server/.env` (see `server/.env.example`) and add your `MONGO_URI`, `JWT_SECRET`, and Cloudinary keys.
+Required accounts/services:
 
-2. **Run AI Microservice**:
-   ```bash
-   cd ai-service
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   python app.py
-   ```
-
-3. **Run Express Backend**:
-   ```bash
-   cd server
-   npm install
-   npm start # Node index.js
-   ```
-
-4. **Run React Frontend**:
-   ```bash
-   cd client
-   npm install
-   npm start
-   ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+* Groq API Key
+* MongoDB Atlas Database Cluster
+* Cloudinary Account
 
 ---
 
-## 🐳 Docker Setup (Recommended local testing)
+### Environment Configuration
 
-You can launch the entire system locally with one command using Docker:
+Create:
+
+**ai-service/.env**
+
+```env
+GROQ_API_KEY=your_api_key
+GROQ_MODEL=gemma2-2b-it
+```
+
+**server/.env**
+
+```env
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_key
+CLOUDINARY_API_SECRET=your_secret
+```
+
+---
+
+### Run Python AI Service
 
 ```bash
-# Build and run all containers
+cd ai-service
+
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+python app.py
+```
+
+Runs on:
+
+```text
+http://localhost:8000
+```
+
+---
+
+### Run Express Backend
+
+```bash
+cd server
+
+npm install
+
+npm start
+```
+
+Runs on:
+
+```text
+http://localhost:5000
+```
+
+---
+
+### Run React Frontend
+
+```bash
+cd client
+
+npm install
+
+npm start
+```
+
+Runs on:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## 🐳 Docker Architecture
+
+SPARK supports containerized development using Docker Compose.
+
+Launch complete stack:
+
+```bash
 docker-compose up --build
 ```
 
-- **Frontend**: [http://localhost:3000](http://localhost:3000)
-- **Backend API status check**: [http://localhost:5000/api/status](http://localhost:5000/api/status)
-- **AI Service health check**: [http://localhost:8000/health](http://localhost:8000/health)
+Services:
 
-To stop the services:
+```text
+Frontend     → localhost:3000
+Backend API  → localhost:5000
+AI Service   → localhost:8000
+```
+
+Stop services:
+
 ```bash
 docker-compose down
 ```
 
 ---
 
-## ☁️ Deploy to Render (One-Click)
+## ☁️ Production Deployment (Render)
 
-SPARK includes a `render.yaml` blueprint. To deploy the entire portfolio stack:
+SPARK is configured for cloud deployment using Docker containers on Render.
 
-1. Push your updated codebase to a personal GitHub repository.
-2. Log in to [Render Dashboard](https://dashboard.render.com/).
-3. Click **"New"** → **"Blueprint"**.
-4. Connect your GitHub repository.
-5. Render will automatically parse the services from `render.yaml`:
-   - **`spark-ai-service`** (Python Flask)
-   - **`spark-backend`** (Express)
-   - **`spark-frontend`** (React + Nginx)
-6. Supply the required environment secrets in the Render setup wizard:
-   - `GEMINI_API_KEY` (Your Google API key)
-   - `MONGO_URI` (MongoDB connection string)
-   - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
-7. Click **Deploy**. Render will build and link the containers automatically!
+Deployment flow:
+
+```text
+GitHub Repository
+        ↓
+Render Blueprint Deployment
+        ↓
+Build Containers Automatically
+        ↓
+Connect Services
+        ↓
+Production Deployment
+```
+
+Services deployed:
+
+* spark-frontend
+* spark-backend
+* spark-ai-service
+
+Required Environment Variables:
+
+```env
+GROQ_API_KEY
+GROQ_MODEL
+MONGO_URI
+JWT_SECRET
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+```
+
+---
+
+## 🔥 Production Engineering Highlights
+
+This project demonstrates:
+
+* Full-stack MERN development
+* Microservices architecture design
+* AI API integration with cloud-hosted LLMs
+* Docker containerization
+* Cloud deployment on Render
+* Secure environment variable management
+* External cloud database integration
+* Scalable backend architecture
+
+---
+
+## 📌 Future Improvements
+
+Planned enhancements:
+
+* Adaptive quiz generation based on student performance
+* AI-powered personalized learning recommendations
+* Student leaderboard and reward system
+* Teacher analytics dashboard
+* Real-time classroom collaboration system
+
+---
+
+## 👨‍💻 Project Goal
+
+SPARK aims to bridge traditional education with AI-powered learning by giving teachers automated content generation tools and students an engaging personalized learning experience.
+
+Built as a **production-level scalable educational technology platform**.
